@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 
 import pytest
 from fastapi.testclient import TestClient
@@ -332,7 +332,7 @@ def test_without_consent_chat_does_not_store_health_numbers(client: TestClient, 
 def test_a_dating_row_with_no_dates_falls_back_to_the_plain_week_instead_of_crashing(client: TestClient, auth_headers) -> None:
     """A row with neither a last period nor a due date used to raise a TypeError (None minus a timedelta)."""
     from app.core.db import SessionLocal
-    from app.models import PregnancyDating, User
+    from app.models import PregnancyDating, PregnancyProfile, User
 
     client.put("/profile", headers=auth_headers, json={"consent": True, "consent_version": "v1.0"})
     client.put("/pregnancy", headers=auth_headers, json={"current_week": 12, "first_pregnancy": True})
@@ -341,6 +341,11 @@ def test_a_dating_row_with_no_dates_falls_back_to_the_plain_week_instead_of_cras
         row = db.query(PregnancyDating).filter_by(user_id=user.id).one_or_none() or PregnancyDating(user_id=user.id, source="week")
         row.lmp_date = row.edd_date = None
         db.add(row)
+        # The fallback ages the saved week from this timestamp; use the fixture's clock.
+        profile = db.query(PregnancyProfile).filter_by(user_id=user.id).one()
+        profile.updated_at = datetime.combine(TODAY, time.min, tzinfo=timezone.utc)
         db.commit()
         d = dating.resolve(db, user, TODAY)
         assert d is not None and d.week == 12
+        later = dating.resolve(db, user, TODAY + timedelta(days=7))
+        assert later is not None and later.week == 13

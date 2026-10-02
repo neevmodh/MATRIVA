@@ -1,9 +1,10 @@
 name: CI
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
-    branches: [main, backend/bhavya, frontend/raj, mvp]
+    branches: [main, backend/bhavya, frontend/raj, mvp, "fix/**"]
 
 jobs:
   backend:
