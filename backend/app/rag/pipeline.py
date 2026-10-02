@@ -258,6 +258,7 @@ def _langchain_answer_query(
     client: Groq | None,
     k: int,
     settings: Settings,
+    config: dict[str, Any] | None = None,
 ) -> PipelineResult:
     """Compose the complete blocking RAG path as a LangChain runnable chain.
 
@@ -337,7 +338,19 @@ def _langchain_answer_query(
         ),
     )
     chain = prepare_step | branch
-    return chain.invoke(None, config=run_config(settings, orchestrator="langchain"))
+    # Caller-supplied config wins, so tracing/callbacks can be attached from
+    # outside without losing the project name and run naming. RunnableConfig is a
+    # TypedDict, so the two keys callers actually pass are set explicitly rather
+    # than splatted.
+    base = run_config(settings, orchestrator="langchain")
+    if config:
+        if config.get("callbacks") is not None:
+            base["callbacks"] = config["callbacks"]
+        if config.get("tags") is not None:
+            base["tags"] = config["tags"]
+        if config.get("metadata") is not None:
+            base["metadata"] = config["metadata"]
+    return chain.invoke(None, config=base)
 
 
 def answer_query(
@@ -349,6 +362,7 @@ def answer_query(
     profile: UserContext | None = None,
     client: Groq | None = None,
     k: int = DEFAULT_K,
+    config: dict[str, Any] | None = None,
 ) -> PipelineResult:
     """Run the full pipeline for one query.
 
@@ -356,6 +370,9 @@ def answer_query(
     keeps the original explicit Python sequence as a compatibility/rollback
     seam. An injected Groq-compatible client remains supported in both modes
     for deterministic tests without a live provider key.
+
+    ``config`` is an optional LangChain ``RunnableConfig``; pass it to attach
+    callbacks or tracing to a specific invocation (see ``app.rag.tracing``).
     """
 
     settings = get_settings()
@@ -369,6 +386,7 @@ def answer_query(
             client=client,
             k=k,
             settings=settings,
+            config=config,
         )
 
     plan = _prepare_generation(

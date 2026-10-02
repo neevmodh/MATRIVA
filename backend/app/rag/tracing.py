@@ -64,6 +64,11 @@ def apply_tracing_env(settings: Settings | None = None) -> bool:
     """
 
     resolved = settings or get_settings()
+    # Honour an explicit opt-out, but treat a bare LANGCHAIN_TRACING_V2=true as
+    # intent to trace rather than as permission to upload verbatim health text:
+    # the anonymity decision belongs to LANGSMITH_ANONYMIZE, which defaults on.
+    anonymize = getattr(resolved, "langsmith_anonymize", True)
+
     if not tracing_enabled(resolved):
         os.environ["LANGCHAIN_TRACING_V2"] = "false"
         return False
@@ -73,9 +78,15 @@ def apply_tracing_env(settings: Settings | None = None) -> bool:
     key = getattr(resolved, "langsmith_api_key", "") or os.environ.get("LANGSMITH_API_KEY")
     if key:
         os.environ["LANGSMITH_API_KEY"] = key
-    if getattr(resolved, "langsmith_anonymize", True):
+
+    if anonymize:
         os.environ["LANGCHAIN_HIDE_INPUTS"] = "true"
         os.environ["LANGCHAIN_HIDE_OUTPUTS"] = "true"
+    else:
+        # Explicitly asking for payloads: remove the flags rather than leaving a
+        # stale "true" behind from an earlier run.
+        os.environ.pop("LANGCHAIN_HIDE_INPUTS", None)
+        os.environ.pop("LANGCHAIN_HIDE_OUTPUTS", None)
     return True
 
 

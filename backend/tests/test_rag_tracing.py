@@ -18,6 +18,27 @@ import pytest
 from app.rag import tracing
 
 
+@pytest.fixture(autouse=True)
+def _reset_langchain_tracing_cache():
+    """Stop LangChain caching an enabled tracer for the rest of the session.
+
+    LangChain memoises its tracer handler with ``lru_cache(maxsize=1)``. A test
+    that turns tracing on would therefore make every later test in the run POST
+    to LangSmith, breaking the suite's hermetic guarantee. Clear the cache and
+    force the flag off after each test in this module.
+    """
+
+    yield
+    os.environ["LANGCHAIN_TRACING_V2"] = "false"
+    os.environ.pop("LANGSMITH_API_KEY", None)
+    try:
+        from langchain_core.callbacks.manager import _configure_hooks
+
+        _configure_hooks.cache_clear()
+    except Exception:  # pragma: no cover - internal detail, best effort
+        pass
+
+
 def _settings(**overrides):
     base = {
         "langsmith_tracing": False,
@@ -121,6 +142,34 @@ def test_citation_summary_exposes_decisions_without_prose() -> None:
     # The user's own words must not appear anywhere in the trace payload.
     assert "bleeding" not in repr(summary)
     assert "hospital" not in repr(summary)
+
+
+def test_anonymisation_overrides_a_bare_tracing_flag(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A bare LANGCHAIN_TRACING_V2=true must not be able to leak payloads.
+
+    LangChain reads that variable directly, so without startup reconciliation
+    setting LANGCHAIN_HIDE_* it would upload the user's literal question and
+    answer even though LANGSMITH_ANONYMIZE was left on.
+    """
+
+    monkeypatch.setenv("LANGCHAIN_TRACING_V2", "true")
+    monkeypatch.setenv("LANGSMITH_API_KEY", "test-key")
+    tracing.apply_tracing_env(_settings(langsmith_tracing=True, langsmith_anonymize=True))
+    assert os.environ["LANGCHAIN_HIDE_INPUTS"] == "true"
+    assert os.environ["LANGCHAIN_HIDE_OUTPUTS"] == "true"
+
+
+def test_explicit_opt_out_clears_stale_flags(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Turning anonymisation off must remove a previously-set hide flag."""
+
+    monkeypatch.setenv("LANGCHAIN_API_KEY", "test-key")
+    monkeypatch.setenv("LANGCHAIN_HIDE_INPUTS", "true")
+    monkeypatch.setenv("LANGCHAIN_HIDE_OUTPUTS", "true")
+    tracing.apply_tracing_env(
+        _settings(langsmith_tracing=True, langsmith_api_key="k", langsmith_anonymize=False)
+    )
+    assert "LANGCHAIN_HIDE_INPUTS" not in os.environ
+    assert "LANGCHAIN_HIDE_OUTPUTS" not in os.environ
 
 
 def test_citation_summary_handles_none() -> None:

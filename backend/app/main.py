@@ -39,6 +39,7 @@ from app.core.observability import (
 from app.core.rate_limit import rate_limiter
 from app.core.redis import connect_redis
 from app.core.security import validate_runtime_security
+from app.rag.tracing import apply_tracing_env
 from app.safety.guardrails import load_registry
 
 settings = get_settings()
@@ -50,6 +51,18 @@ logger = logging.getLogger("matriva.api")
 async def lifespan(_: FastAPI):
     validate_runtime_security()
     load_registry()  # an invalid guard-rail rule file must stop the boot, not surprise a patient
+    # Reconcile LangSmith tracing with the privacy defaults BEFORE anything can
+    # be traced. Must run at startup, not lazily: LangChain reads these env vars
+    # when a callback handler is first built, so leaving them unset lets a bare
+    # LANGCHAIN_TRACING_V2=true upload verbatim questions and answers.
+    tracing_on = apply_tracing_env(settings)
+    if tracing_on:
+        logger.warning(
+            "LangSmith tracing is ON (project=%s, anonymised=%s). "
+            "Traces leave this machine. Use development or synthetic data only.",
+            settings.langsmith_project,
+            settings.langsmith_anonymize,
+        )
     if settings.auto_create_tables:
         init_db()
     app.state.redis = connect_redis()
