@@ -14,11 +14,6 @@ os.environ["RAG_ORCHESTRATOR"] = "native"
 # Hermetic: never reach a real LLM, embedding or search provider, even if backend/.env has live keys.
 for _key in ("LLM_API_KEY", "GROQ_API_KEY", "EMBEDDING_API_KEY", "GEMINI_API_KEY", "TAVILY_API_KEY"):
     os.environ[_key] = ""
-# Hermetic: never export traces. LangChain caches its tracer on first use, so a
-# single test that enables tracing would otherwise make every later test POST to
-# LangSmith. Tracing is exercised by monkeypatching the helpers, never for real.
-os.environ["LANGCHAIN_TRACING_V2"] = "false"
-os.environ.pop("LANGSMITH_API_KEY", None)
 
 import pytest
 from fastapi.testclient import TestClient
