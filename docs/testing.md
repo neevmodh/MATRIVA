@@ -4,7 +4,7 @@ What is tested, how to run it, and what a passing run does and does not prove.
 
 | Suite | Where | Tests | Run |
 |---|---|---:|---|
-| Backend | `backend/tests/` | 534 | `cd backend && pytest -q` |
+| Backend | `backend/tests/` | 540 | `cd backend && pytest -q` |
 | Ingestion | `ingestion/tests/` | 43 | `cd ingestion && pytest tests/` |
 | Evaluation harnesses | `evaluation/tests/` | 36 | `cd evaluation && pytest tests/` |
 | Frontend end-to-end | `frontend/tests/e2e/` | 12 | `cd frontend && npx playwright test` |
@@ -44,6 +44,8 @@ The backend tests use a SQLite file that is dropped and recreated for every test
 - Nutrient amounts equal the USDA value times the serving, and dry grains use a dry serving.
 
 ## Retrieval quality is measured, not only tested
+
+Evaluation reports are generated locally and ignored by Git. See [`evaluation/reports/README.md`](../evaluation/reports/README.md) for the commands and the distinction between offline and provider-backed results.
 
 `evaluation/local_rag/` holds four question sets. Only the last one is a clean test, because the others were used to diagnose and fix failures.
 

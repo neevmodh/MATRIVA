@@ -37,6 +37,7 @@ Everything about MATRIVA, in one place. If you are new, read the [project README
 | [`FEATURES.md`](./FEATURES.md) | The original scope and what has grown since |
 | [`TECH_BLOG.md`](./TECH_BLOG.md) | How and why it was built, including what failed |
 | [`SUBMISSION.md`](./SUBMISSION.md) | The Round 1 write-up |
+| [`repository-audit.md`](./repository-audit.md) | File inventory, cleanup evidence and repository follow-up findings |
 | [`WORKFLOW_*.md`](./WORKFLOW_NEEV.md) | The original sprint plans (historical) |
 
 ## Keeping the docs true

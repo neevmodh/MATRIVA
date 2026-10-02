@@ -19,6 +19,14 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-02 — @neevmodh — Repository audit and file cleanup
+
+- Inventoried all 414 tracked files and checked syntax/data parsing, internal imports, documentation links, duplicate hashes and frontend reachability.
+- Removed 17 duplicate, unused, generated or placeholder files, including the extra 17 MB book PDF; documented evidence and follow-ups in `docs/repository-audit.md` and report regeneration in `evaluation/reports/README.md`.
+- Corrected the frontend CODEOWNERS entry flagged by GitHub, current repository links and test counts; ignore SQLite sidecars and Ruff caches.
+- Validation: 540 backend, 43 ingestion, 36 evaluation and 12 browser tests pass; Ruff, fresh mypy, secret scan, frontend lint/type checks and the Webpack production build pass. All four report runners regenerated ignored output; the legacy offline hallucination score remains 3/11 and is recorded as a follow-up.
+- Status: done, pending GitHub checks and integration.
+
 ### 2026-10-02 — @neevmodh — CI triggers for fix branches and manual runs
 
 - Added CI push coverage for `fix/**` branches and a `workflow_dispatch` trigger for manual validation.

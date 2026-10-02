@@ -13,7 +13,7 @@ cp .env.example .env.local   # set NEXT_PUBLIC_API_URL to your backend
 npm run dev
 ```
 
-Useful scripts: `npm run build`, `npm run lint`, `npm run typecheck`, `npm run test:e2e` (Playwright, mocked API, 9 tests).
+Useful scripts: `npm run build`, `npm run lint`, `npm run typecheck`, `npm run test:e2e` (Playwright, mocked API, 12 tests).
 
 ## Layout
 
