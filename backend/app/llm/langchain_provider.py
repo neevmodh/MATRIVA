@@ -72,11 +72,16 @@ def build_generation_runnable(
     """
 
     if client is not None:
-        return RunnableLambda(lambda packet: legacy_generator(packet, client=client))
+        return RunnableLambda(lambda packet: legacy_generator(packet, client=client)).with_config(
+            {"run_name": "generation.compat"}
+        )
     # Provider construction is lazy so an urgent/insufficient-evidence branch
     # can short-circuit without even instantiating a model client.
     lazy_model = RunnableLambda(lambda _messages: build_chat_model(settings))
-    return RunnableLambda(packet_messages) | lazy_model | StrOutputParser()
+    prompt_step = RunnableLambda(packet_messages).with_config(
+        {"run_name": "prompt.context_packet"}
+    )
+    return prompt_step | lazy_model | StrOutputParser()
 
 
 def stream_generation(
