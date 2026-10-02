@@ -40,6 +40,7 @@ from app.rag.multi_domain import (
 )
 from app.rag.reranking import UserContext, rerank
 from app.rag.retrieval import RetrievedChunk, hybrid_retrieve, retrieve_chunks_scored
+from app.rag.tracing import run_config
 from app.rag.web_search import search_web
 from app.safety.classifier import SafetyClassification, classify
 from app.safety.post_check import (
@@ -309,16 +310,34 @@ def _langchain_answer_query(
             used_web_search=bool(packet.web_sources),
         )
 
-    prepare_step = RunnableLambda(prepare)
+    # Explicit run names so a LangSmith trace shows each stage as its own node
+    # (with its own duration) instead of one opaque RunnableLambda blob. Purely
+    # observability: with tracing disabled these are no-ops that cost nothing.
+    prepare_step = RunnableLambda(prepare).with_config(
+        {"run_name": "1.safety+retrieval+grounding"}
+    )
     assign_packet = RunnablePassthrough.assign(context_packet=context_packet)
     generate_step = RunnablePassthrough.assign(
-        raw_answer=(RunnableLambda(context_packet) | generation)
+        raw_answer=(
+            RunnableLambda(context_packet).with_config({"run_name": "2.context_packet"})
+            | generation.with_config({"run_name": "3.generate"})
+        )
     )
     branch = RunnableBranch(
-        (has_early_result, RunnableLambda(early_result)),
-        (assign_packet | generate_step | RunnableLambda(finalize)),
+        (
+            has_early_result,
+            RunnableLambda(early_result).with_config({"run_name": "0.short_circuit"}),
+        ),
+        (
+            assign_packet
+            | generate_step
+            | RunnableLambda(finalize).with_config(
+                {"run_name": "4.citations+post_check"}
+            )
+        ),
     )
-    return (prepare_step | branch).invoke(None)
+    chain = prepare_step | branch
+    return chain.invoke(None, config=run_config(settings, orchestrator="langchain"))
 
 
 def answer_query(

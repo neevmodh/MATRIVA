@@ -9,7 +9,7 @@ Everything about MATRIVA, in one place. If you are new, read the [project README
 | **A mother, ANM, ASHA or doctor** | [Care features](./care-features.md) · [What to eat](./food-guide.md) · [Privacy](./privacy.md) · [FAQ](./faq.md) |
 | **A clinician, pharmacist or native-speaker reviewer** | [Clinical review guide](./clinical-review.md) · [Guard rails](./guardrails.md) · [Data sources](./data-sources.md) · [Glossary](./glossary.md) |
 | **A developer** | [Architecture](./architecture.md) · [API](./api.md) · [Configuration](./configuration.md) · [Testing](./testing.md) · [Contributing](../CONTRIBUTING.md) |
-| **Working on retrieval** | [RAG](./rag.md) · [Offline RAG engine](./local-rag.md) |
+| **Working on retrieval** | [RAG](./rag.md) · [Offline RAG engine](./local-rag.md) · [Observability](./observability.md) |
 | **Deploying it** | [Deployment](./deployment.md) · [Configuration](./configuration.md) · [Security](../SECURITY.md) |
 | **A reviewer of the project** | [Tech blog](./TECH_BLOG.md) · [Compliance](./COMPLIANCE.md) · [Roadmap](./roadmap.md) · [Submission](./SUBMISSION.md) |
 
@@ -27,6 +27,7 @@ Everything about MATRIVA, in one place. If you are new, read the [project README
 | [`privacy.md`](./privacy.md) | The data map and your controls |
 | [`COMPLIANCE.md`](./COMPLIANCE.md) | Indian policy and law the project aligns with |
 | [`rag.md`](./rag.md) · [`local-rag.md`](./local-rag.md) | The retrieval pipeline, schema, offline engine and measured results |
+| [`observability.md`](./observability.md) | Tracing the RAG pipeline stage by stage, locally and in LangSmith |
 | [`configuration.md`](./configuration.md) | Every environment variable |
 | [`deployment.md`](./deployment.md) | Docker, production checklist, health and observability |
 | [`testing.md`](./testing.md) | The suites, what each proves, how retrieval is measured |

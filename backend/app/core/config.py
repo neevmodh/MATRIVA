@@ -73,6 +73,26 @@ class Settings(BaseSettings):
     # unchanged; web search is only ever attempted when this is configured.
     tavily_api_key: str = ""
 
+    # --- LangSmith tracing ---------------------------------------------------
+    # PREREQUISITE: read docs/observability.md before enabling.
+    #
+    # MATRIVA handles pregnancy and health questions. Enabling tracing uploads
+    # the user's literal question text, the retrieved source passages and the
+    # generated answer to LangSmith's SaaS. That is personal health
+    # information leaving the system, so this is OFF by default and must stay
+    # off in any real deployment.
+    #
+    # Use it for development and demos with synthetic data only. If tracing is
+    # ever needed in production, that needs a data-processing agreement, a
+    # self-hosted LangSmith, or a redaction layer first -- not a config flag.
+    langsmith_tracing: bool = False
+    langsmith_project: str = "matriva"
+    langsmith_api_key: str = ""
+    # Keep prompts/responses out of the trace even when tracing is on. The run
+    # tree (stages, timings, tokens, citations) is what you need to debug the
+    # pipeline; the verbatim text is the part that must not leave the system.
+    langsmith_anonymize: bool = True
+
     @field_validator("debug", mode="before")
     @classmethod
     def parse_debug_flag(cls, value: object) -> bool:
