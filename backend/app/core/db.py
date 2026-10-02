@@ -21,6 +21,7 @@ engine = create_engine(
     settings.database_url,
     connect_args=connect_args,
     pool_pre_ping=True,
+    hide_parameters=True,  # database errors must not expose health text or credentials in logs
 )
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False)
 

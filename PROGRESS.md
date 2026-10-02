@@ -19,6 +19,17 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-02 — @neevmodh — Production reliability and grounding fixes
+
+- Fixed frontend public assets/network binding, Redis authenticated readiness, writable persistent reports, OCR installation, trusted-proxy defaults and conflicting optional Groq pins. Added an isolated production Docker/browser runner with fresh PostgreSQL and Redis.
+- Added atomic shared quotas across API routes, readable CORS outage/limit responses, accurate readiness status and bounded metric route labels. Updated vulnerable dependency pins and added `pip check`/`pip-audit` to CI; updated CI action runtimes and pinned Ubuntu 24.04.
+- Tightened keyword grounding using the existing coverage floor and kept vector grounding separate from keyword ranking bonuses. The legacy abstention benchmark now passes 11/11; CI enforces it and supported-question regressions remain green.
+- Enabled `main` protection requiring PR merges and all six CI jobs, applying to admins and blocking force pushes/deletion. Approval count stays zero so a solo maintainer is not blocked waiting for an unavailable reviewer.
+- Corrected local quickstart configuration: `backend/.env.example` uses SQLite with no Redis/provider keys; the root example remains Docker-oriented. Added CI checks for relative documentation links and fresh PostgreSQL migrations.
+- Validation: 566 backend, 43 ingestion, 36 evaluation, 12 mocked browser tests and 1 real production browser flow pass. Ruff, mypy, secret scan, lint/type checks, production builds, dependency consistency and vulnerability audit pass. Real container smoke covers migrations, readiness, images, authentication, consent, care, emergency streaming, document review, reports, Redis quotas, export and deletion.
+- Hardened report/meal parsing against excessive backtracking and invalid numeric portions; restricted demo seeding, removed credential output/temporary credential files, and hid SQL parameters in errors. Added regression coverage and pinned patched pip/setuptools so CI and container tooling also pass vulnerability audits.
+- Status: local validation complete; GitHub checks and integration pending. Clinical/legal/native-language review and live-provider answer quality remain outside automated verification.
+
 ### 2026-10-02 — @neevmodh — Repository audit and file cleanup
 
 - Inventoried all 414 tracked files and checked syntax/data parsing, internal imports, documentation links, duplicate hashes and frontend reachability.

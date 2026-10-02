@@ -14,7 +14,7 @@ Two switches in the backend entrypoint:
 | Variable | Default | What it does |
 |---|---|---|
 | `RUN_MIGRATIONS` | `true` | Run `alembic upgrade head` at start. Set `false` on all but one replica, or run migrations as a release step |
-| `FORWARDED_ALLOW_IPS` | `*` | Which proxies Uvicorn trusts for `X-Forwarded-*`. **Set it to your proxy's address in production** |
+| `FORWARDED_ALLOW_IPS` | `127.0.0.1` | Which proxies Uvicorn trusts for `X-Forwarded-*`. **Set it to your proxy's address in production**; forwarded client addresses affect rate limits |
 
 `docker-compose.prod.yml` differs from the development file: it sets `ENVIRONMENT=production`, `DEBUG=false`, `DEMO_MODE=false` and `AUTO_CREATE_TABLES=false`, **refuses to start unless** `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `REDIS_PASSWORD`, `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `CORS_ORIGINS` and `NEXT_PUBLIC_API_URL` are set, only exposes the backend inside the network (put TLS and a reverse proxy in front), and installs the optional provider packages by default (`INSTALL_OPTIONAL=true`).
 
@@ -38,7 +38,7 @@ For a local API-only run:
 cd backend
 python -m pip install -r requirements.txt
 alembic upgrade head
-python ../database/seed/seed.py  # optional synthetic demo data
+python ../database/seed/seed.py  # optional; set DEMO_PASSWORD first (database/seed/README.md)
 uvicorn app.main:app --reload
 ```
 
@@ -46,7 +46,7 @@ uvicorn app.main:app --reload
 
 - The default `RAG_ENGINE=local` needs no provider keys. Set `RAG_ENGINE=external` plus
   `LLM_API_KEY` / `EMBEDDING_API_KEY` to use Groq and Gemini.
-- Photo import of lab reports needs `tesseract` on the backend host (`apt install tesseract-ocr`).
+- Photo import of lab reports needs `tesseract` on a local backend host (`apt install tesseract-ocr`); the Docker image includes it.
 - Load the real knowledge with `python scripts/ingest_real_knowledge.py` and
   `python scripts/build_book_index.py`, then approve documents in *Admin → Documents*.
 - The frontend ships its own Docker image; see [`frontend/README.md`](../frontend/README.md).
@@ -64,7 +64,16 @@ The backend image holds `app/`, `alembic/` and the entrypoint. It does **not** c
   ```
 
   Everything loads as **pending**. Sign in as an admin, open Admin, Documents, and approve what a reviewer has cleared. Until then the chat honestly says it has no reviewed source. The guard rails, care rules, food guide, ontology and the book's structure (`app/data/`) *are* in the image, so they work without this step.
-- **Tesseract.** Importing a lab report from a photo (`/care/readings/ocr`) needs the `tesseract` binary, which the slim image does not have. Pasting the report text works without it. Add `apt-get install tesseract-ocr` to the Dockerfile if you need photos.
+The backend runs as a non-root user and writes its local database and reports under `/app/runtime`. Both Compose files persist that directory in `backend_runtime`. The frontend runtime includes `public/` and listens on `0.0.0.0`, so illustrations and network access work in the deployed image. Its environment contains the public API URL only; backend credentials are not shared with the frontend container.
+
+## Disposable production validation
+
+```bash
+cd frontend && npm ci && npx playwright install chromium
+cd .. && python scripts/docker_smoke.py --browser
+```
+
+This builds the production images, starts fresh PostgreSQL/pgvector and password-protected Redis, upgrades and re-runs migrations, and checks readiness, public images, authentication, consent, care plans, emergency routing, document approval, report writes, shared quotas, export and account deletion. The browser uses the actual frontend and API, including CORS and streaming. Synthetic credentials are passed through the Compose process environment; an empty temporary environment file prevents loading your `.env` without storing passwords on disk. Only its uniquely named containers and volumes are removed afterward. Omit `--browser` for HTTP-only checks.
 
 ## Production checklist
 
@@ -75,7 +84,7 @@ The backend image holds `app/`, `alembic/` and the entrypoint. It does **not** c
 - Run migrations as a controlled release step, not concurrently from every replica.
 - Put the API behind TLS and a reverse proxy/load balancer.
 - Configure exact `CORS_ORIGINS`; do not use `*` with credentials.
-- Set `INSTALL_OPTIONAL=true` at build time if the deployment needs Groq/Gemini/Redis client packages; the default image stays smaller and uses the safe grounded fallback when providers are unavailable.
+- Provider packages use one set of main requirements pins. `INSTALL_OPTIONAL` remains accepted for compatibility; the build runs `pip check` in either mode.
 - Keep provider keys in a secret manager; never expose them through frontend environment variables.
 - Restrict `/admin`, `/evaluation`, and `/internal/metrics` at the network and authorization layers.
 - Run backend tests, Ruff, secret scan, and safety evaluation before release.
@@ -92,6 +101,6 @@ The backend image holds `app/`, `alembic/` and the entrypoint. It does **not** c
 
 ## Health and observability
 
-`GET /health` checks application/database availability. Staff can inspect
+`GET /health` checks database and Redis availability and returns 503 when degraded. Docker also validates its JSON status. Staff can inspect
 `GET /internal/metrics`; metrics contain route counts and latency aggregates, not raw health
 queries. Every response includes a request ID for correlation.

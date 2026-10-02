@@ -37,6 +37,7 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 from app.core.db import SessionLocal, init_db  # noqa: E402
+from app.core.config import get_settings  # noqa: E402
 from app.core.security import hash_password  # noqa: E402
 from app.models import (  # noqa: E402
     AyurvedicSource,
@@ -62,7 +63,7 @@ from app.models import (  # noqa: E402
 from app.rag.embeddings import embed_text  # noqa: E402
 from app.services.stage import calculate_stage  # noqa: E402
 
-DEMO_PASSWORD = "DemoPass123!"
+DEMO_PASSWORD = os.environ.get("DEMO_PASSWORD", "")
 
 
 def _seed_embedding(content: str) -> list[float] | None:
@@ -115,6 +116,13 @@ def _source(db, key: str, **values: str) -> KnowledgeSource:
 
 
 def seed_demo_data() -> None:
+    settings = get_settings()
+    if settings.is_production or not settings.demo_mode:
+        raise RuntimeError("Synthetic demo seeding is disabled outside demo development mode")
+    if not DEMO_PASSWORD:
+        raise RuntimeError("Set DEMO_PASSWORD to a unique password before creating demo accounts")
+    if len(DEMO_PASSWORD) < 12:
+        raise ValueError("DEMO_PASSWORD must be at least 12 characters")
     init_db()
     db = SessionLocal()
     try:
@@ -210,7 +218,7 @@ def seed_demo_data() -> None:
         db.commit()
         print("Seeded DEMO DATA successfully")
         print("Demo accounts: admin@demo.example.com, evaluator@demo.example.com, demo.a@example.com")
-        print(f"Demo password: {DEMO_PASSWORD}")
+        print("Demo account password is configured in DEMO_PASSWORD; it is not logged.")
     except Exception:
         db.rollback()
         raise

@@ -4,12 +4,15 @@ What is tested, how to run it, and what a passing run does and does not prove.
 
 | Suite | Where | Tests | Run |
 |---|---|---:|---|
-| Backend | `backend/tests/` | 540 | `cd backend && pytest -q` |
+| Backend | `backend/tests/` | 566 | `cd backend && pytest -q` |
 | Ingestion | `ingestion/tests/` | 43 | `cd ingestion && pytest tests/` |
 | Evaluation harnesses | `evaluation/tests/` | 36 | `cd evaluation && pytest tests/` |
 | Frontend end-to-end | `frontend/tests/e2e/` | 12 | `cd frontend && npx playwright test` |
+| Production browser integration | `frontend/tests/production/` | 1 | `python scripts/docker_smoke.py --browser` (repository root) |
 
-Static checks: `ruff check .` and `mypy app/` (backend), `npm run lint`, `npm run typecheck` and `npm run build` (frontend), `python scripts/secret_scan.py --root ..`, and `npm audit --omit=dev`. CI runs all of them on every pull request ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
+Static checks: `ruff check .` and `mypy app/` (backend), `npm run lint`, `npm run typecheck` and `npm run build` (frontend), `python scripts/secret_scan.py --root ..`, `pip check`, `pip-audit`, and `npm audit --omit=dev`. CI also builds and exercises the production Docker stack with a real browser on every pull request ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
+
+From the repository root, `python scripts/check_docs.py` checks relative Markdown file/image links. It skips external URLs, absolute URLs and anchor validation. CI runs it before backend installation.
 
 ## Backend
 

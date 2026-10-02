@@ -38,18 +38,11 @@ def test_clearly_unrelated_questions_are_correctly_flagged() -> None:
             assert case["passed"], case["question"]
 
 
-def test_known_limitation_is_visible_not_silently_passing() -> None:
-    """KNOWN LIMITATION (see PROGRESS.md #19 entry): keyword-overlap scoring
-    cannot reliably distinguish an incidental single/double-word match (e.g.
-    "risk"/"screening" from the FOGSI doc matching a Down-syndrome-screening
-    question in an unrelated sense) from genuine topical relevance -- there
-    is no score threshold that cleanly separates true-positive retrieval
-    scores (0.1-0.7 in this corpus) from these false-positive scores
-    (0.0-0.2), so some topically-related-but-uncovered questions will
-    currently proceed to generation instead of returning insufficient
-    evidence. This requires #5's real semantic embeddings to fix properly.
-    This test exists so that limitation stays visible in CI output instead
-    of silently regressing further or being forgotten."""
+def test_all_out_of_corpus_cases_abstain_before_generation() -> None:
+    """Enforce the complete benchmark, including incidental keyword matches.
+
+    Passing this small set does not prove semantic sufficiency for every query;
+    backend tests separately ensure supported queries still reach generation.
+    """
     report = run_evaluation()
-    print(f"[known limitation] pass_rate={report['num_passed']}/{report['num_questions']}")
-    assert report["num_questions"] >= 10  # the suite itself is real; the gap is retrieval quality
+    assert report["all_passed"], [case for case in report["cases"] if not case["passed"]]

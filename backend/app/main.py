@@ -36,7 +36,7 @@ from app.core.observability import (
     new_request_id,
     request_id_context,
 )
-from app.core.rate_limit import rate_limiter
+from app.core.rate_limit import RateLimitUnavailable, allow_request
 from app.core.redis import connect_redis
 from app.core.security import validate_runtime_security
 from app.safety.guardrails import load_registry
@@ -64,13 +64,6 @@ app = FastAPI(
 )
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.cors_origin_list,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
-)
 
 
 @app.middleware("http")
@@ -81,24 +74,36 @@ async def request_security_and_metrics(request: Request, call_next):
     started = time.perf_counter()
     path = request.url.path
     try:
-        if path.startswith(
-            ("/auth", "/chat", "/knowledge", "/sources", "/pregnancy", "/guidelines", "/ayurveda")
-        ):
-            if path.startswith("/auth"):
+        # Quotas span resource IDs and general routes, preventing URL changes
+        # from bypassing limits or creating unlimited limiter keys.
+        family = path.strip("/").split("/", 1)[0]
+        if request.method != "OPTIONS" and family not in {"", "health", "docs", "redoc", "openapi.json"}:
+            if family == "auth":
                 limit = settings.rate_limit_auth_per_minute
-            elif path.startswith("/chat"):
+            elif family == "chat":
                 limit = settings.rate_limit_chat_per_minute
             else:
                 limit = settings.rate_limit_general_per_minute
+            bucket = family if family in {"auth", "chat"} else "general"
             client = request.client.host if request.client else "unknown"
-            allowed, _remaining, retry_after = rate_limiter.allow(f"{client}:{path}", limit)
+            try:
+                allowed, _remaining, retry_after = allow_request(
+                    f"{client}:{bucket}", limit,
+                    redis_client=getattr(app.state, "redis", None),
+                    required=settings.is_production,
+                )
+            except RateLimitUnavailable:
+                response = JSONResponse(status_code=503, content={"detail": "Service temporarily unavailable"})
+                response.headers["X-Request-ID"] = request_id
+                response.headers["Cache-Control"] = "no-store"
+                return response
             if not allowed:
                 response = JSONResponse(
                     status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                     content={"detail": "Rate limit exceeded"},
                     headers={"Retry-After": str(retry_after), "X-Request-ID": request_id},
                 )
-                metrics.observe(path, (time.perf_counter() - started) * 1000, response.status_code)
+                response.headers["Cache-Control"] = "no-store"
                 return response
         response = await call_next(request)
         response.headers["X-Request-ID"] = request_id
@@ -109,8 +114,19 @@ async def request_security_and_metrics(request: Request, call_next):
         return response
     finally:
         elapsed = (time.perf_counter() - started) * 1000
-        metrics.observe(path, elapsed, response.status_code if "response" in locals() else 500)
+        route = request.scope.get("route")
+        metrics.observe(getattr(route, "path", "/unmatched"), elapsed, response.status_code if "response" in locals() else 500)
         request_id_context.reset(token)
+
+
+# Outer CORS middleware also adds browser headers to early 429/503 responses.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origin_list,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
+)
 
 
 @app.exception_handler(RequestValidationError)
@@ -120,7 +136,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         {"loc": list(error.get("loc", [])), "msg": str(error.get("msg", "invalid input")), "type": str(error.get("type", "validation_error"))}
         for error in exc.errors()
     ]
-    return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, content={"detail": safe_errors})
+    return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, content={"detail": safe_errors})
 
 
 @app.exception_handler(Exception)
@@ -138,7 +154,7 @@ def root() -> dict[str, str]:
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
+def health() -> JSONResponse:
     database_status = "ok"
     redis_status = "ok"
     try:
@@ -155,7 +171,10 @@ def health() -> dict[str, str]:
     else:
         redis_status = "not_configured"
     overall = "ok" if database_status == "ok" and redis_status in {"ok", "not_configured"} else "degraded"
-    return {"status": overall, "database": database_status, "redis": redis_status, "version": settings.app_version}
+    return JSONResponse(
+        status_code=200 if overall == "ok" else 503,
+        content={"status": overall, "database": database_status, "redis": redis_status, "version": settings.app_version},
+    )
 
 
 @app.get("/internal/metrics")

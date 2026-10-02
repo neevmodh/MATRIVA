@@ -158,7 +158,9 @@ def _prepare_generation(
     # completely unrelated query -- checking sufficiency post-rerank would
     # make the Section 43 grounding gate never trigger at all.
     web_sources: list[WebSourceEntry] = []
-    if not has_sufficient_evidence(retrieval.chunks, scoring_mode=retrieval.scoring_mode):
+    if not has_sufficient_evidence(
+        retrieval.evidence_chunks or retrieval.chunks, scoring_mode=retrieval.scoring_mode, query=query,
+    ):
         # Section 43's gate has fired on the local corpus. Before falling
         # back to the fixed insufficient-evidence response, try ONE more
         # source of evidence -- but only if an operator has actually
