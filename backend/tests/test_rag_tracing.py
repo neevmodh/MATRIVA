@@ -172,5 +172,50 @@ def test_explicit_opt_out_clears_stale_flags(monkeypatch: pytest.MonkeyPatch) ->
     assert "LANGCHAIN_HIDE_OUTPUTS" not in os.environ
 
 
+def test_langchain_tracing_v2_also_enables_tracing(monkeypatch: pytest.MonkeyPatch) -> None:
+    """LANGCHAIN_TRACING_V2 must switch tracing on, not just LANGSMITH_TRACING.
+
+    LANGCHAIN_TRACING_V2 is the variable LangChain reads and the one its docs
+    use. Reading only LANGSMITH_TRACING meant a correctly configured setup
+    reported "tracing is off" and never exported anything.
+    """
+
+    from app.core.config import Settings
+
+    monkeypatch.setenv("LANGSMITH_TRACING", "")
+    monkeypatch.setenv("LANGCHAIN_TRACING_V2", "true")
+    monkeypatch.setenv("LANGSMITH_API_KEY", "test-key")
+    # A blank LANGSMITH_TRACING must not shadow LANGCHAIN_TRACING_V2, and must
+    # not raise on a bool field either.
+
+    settings = Settings(_env_file=None)  # type: ignore[call-arg]
+    assert settings.langsmith_tracing is True
+    assert tracing.tracing_enabled(settings) is True
+
+
+def test_blank_tracing_var_does_not_crash_boot(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A blank LANGCHAIN_TRACING_V2= is the natural 'left untouched' state.
+
+    pydantic raises ValidationError on an empty string for a bool field, which
+    would stop the app booting over a tracing setting.
+    """
+
+    from app.core.config import Settings
+
+    monkeypatch.setenv("LANGCHAIN_TRACING_V2", "")
+    settings = Settings(_env_file=None)  # type: ignore[call-arg]
+    assert settings.langsmith_tracing is False
+
+
+def test_tracing_defaults_off_with_no_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    from app.core.config import Settings
+
+    monkeypatch.delenv("LANGSMITH_TRACING", raising=False)
+    monkeypatch.delenv("LANGCHAIN_TRACING_V2", raising=False)
+
+    settings = Settings(_env_file=None)  # type: ignore[call-arg]
+    assert settings.langsmith_tracing is False
+
+
 def test_citation_summary_handles_none() -> None:
     assert tracing.summarize_citations(None) == {}

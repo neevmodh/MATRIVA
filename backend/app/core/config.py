@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import Field, field_validator
+from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -86,9 +86,32 @@ class Settings(BaseSettings):
     # Use it for development and demos with synthetic data only. If tracing is
     # ever needed in production, that needs a data-processing agreement, a
     # self-hosted LangSmith, or a redaction layer first -- not a config flag.
-    langsmith_tracing: bool = False
+    # Driven by LANGCHAIN_TRACING_V2 only: that is the variable LangChain itself
+    # reads and the one its documentation and every example uses, so honouring it
+    # is what keeps the app's view of "is tracing on" in step with LangChain's.
+    # Earlier this also accepted LANGSMITH_TRACING, but with two aliases a blank
+    # LANGSMITH_TRACING= in an env file won the lookup and silently forced
+    # tracing off. One variable, one meaning.
+    langsmith_tracing: bool = Field(
+        default=False,
+        validation_alias=AliasChoices("langchain_tracing_v2", "LANGCHAIN_TRACING_V2"),
+    )
     langsmith_project: str = "matriva"
     langsmith_api_key: str = ""
+
+    @field_validator("langsmith_tracing", mode="before")
+    @classmethod
+    def _coerce_tracing_flag(cls, value: object) -> object:
+        """Treat a blank env var as off.
+
+        `LANGSMITH_TRACING=` in an env file is the natural way to leave a switch
+        untouched, and pydantic raises ValidationError on an empty string for a
+        bool field -- which would stop the app booting over a tracing setting.
+        """
+
+        if isinstance(value, str) and value.strip() == "":
+            return False
+        return value
     # Keep prompts/responses out of the trace even when tracing is on. The run
     # tree (stages, timings, tokens, citations) is what you need to debug the
     # pipeline; the verbatim text is the part that must not leave the system.
