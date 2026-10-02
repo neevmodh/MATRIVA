@@ -20,7 +20,7 @@ def make_chunk(chunk_id: str) -> KnowledgeChunk:
         source_id="src-1",
         domain=Domain.NUTRITION,
         evidence_level=EvidenceLevel.SUPPORTED,
-        content="content",
+        content="Corpus question content",
         chunk_index=0,
     )
 
@@ -78,3 +78,30 @@ def test_sufficient_evidence_delegates_to_generation() -> None:
     result = generate_or_insufficient_evidence(packet, [(chunk, 1.0)], client=client)
     assert result == "a real grounded answer [a]"
     assert client.completions.calls == 1
+
+
+def test_incidental_overlap_never_calls_the_llm() -> None:
+    chunk = make_chunk("a")
+    chunk.content = "Pregnancy nutrition includes varied meals."
+    question = "How can I build a pregnancy tracking mobile application?"
+    packet = build_context_packet(question, [(chunk, 0.1)], safety_result={})
+    assert generate_or_insufficient_evidence(packet, [(chunk, 0.1)], client=PoisonClient()) == INSUFFICIENT_EVIDENCE_RESPONSE
+
+
+def test_keyword_coverage_keeps_a_short_supported_question() -> None:
+    chunk = make_chunk("a")
+    chunk.content = "Ragi contains calcium."
+    assert has_sufficient_evidence([(chunk, 0.1)], query="What about ragi?")
+
+
+def test_keyword_bonus_cannot_override_vector_grounding_floor() -> None:
+    from app.rag.retrieval import hybrid_retrieve
+
+    chunk = make_chunk("a")
+    chunk.content = "Corpus question content"
+    result = hybrid_retrieve(
+        "corpus question content", candidate_chunks=[chunk],
+        candidate_scores={"a": 0.7}, candidate_scoring_mode="vector",
+    )
+    assert result.chunks[0][1] > 0.75  # ranking can still use lexical bonuses
+    assert not has_sufficient_evidence(result.evidence_chunks, scoring_mode="vector")

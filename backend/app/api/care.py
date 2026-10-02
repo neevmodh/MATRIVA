@@ -63,7 +63,7 @@ def set_dating(payload: DatingRequest, user: CurrentUser, db: DBSession) -> dict
     except ConsentRequired as exc:
         raise HTTPException(status.HTTP_403_FORBIDDEN, str(exc)) from exc
     except dating_module.DatingError as exc:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(exc)) from exc
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
     db.commit()
     return build_plan(d, dating_module.today_utc())
 
@@ -91,7 +91,7 @@ def put_checkin(payload: CheckinRequest, user: CurrentUser, db: DBSession) -> di
     today = dating_module.today_utc()
     day = payload.date or today
     if day > today:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "A check-in cannot be dated in the future.")
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "A check-in cannot be dated in the future.")
     d = dating_module.resolve(db, user, today)
     week = d.week if d else None
     row = tracking.upsert_checkin(
@@ -131,7 +131,7 @@ def add_reading(payload: ReadingRequest, user: CurrentUser, db: DBSession) -> di
             diastolic=payload.diastolic, context=payload.context, note=payload.note, source=payload.source,
         )
     except readings_module.ReadingError as exc:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(exc)) from exc
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
     out = readings_module.payload(row)
     if any(f["level"] == "urgent" for f in out["flags"]):
         record_safety_event(db, user_id=user.id, query_hash=hash_for_log(f"reading:{row.kind}"), risk_level="urgent_escalation",
@@ -173,7 +173,7 @@ async def ocr_report(user: CurrentUser, file: UploadFile = File(...)) -> dict[st
     except readings_module.OcrUnavailable as exc:
         raise HTTPException(status.HTTP_501_NOT_IMPLEMENTED, str(exc)) from exc
     except readings_module.ReadingError as exc:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(exc)) from exc
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(exc)) from exc
     return {"text": text, "candidates": readings_module.parse_report_text(text, dating_module.today_utc())}
 
 
@@ -191,7 +191,7 @@ def add_meal(payload: MealRequest, user: CurrentUser, db: DBSession) -> dict[str
     day = payload.date or dating_module.today_utc()
     row, parsed = meals_module.log(db, user, day, payload.text, payload.meal_type)
     if row is None:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "I could not recognise any food there. Try names like dal, roti, rice, curd, milk, banana. Not understood: " + "; ".join(parsed["unknown"]))
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, "I could not recognise any food there. Try names like dal, roti, rice, curd, milk, banana. Not understood: " + "; ".join(parsed["unknown"]))
     db.commit()
     return {"meal_id": row.id, "items": row.items, "totals": row.totals, "not_understood": parsed["unknown"]}
 
@@ -285,4 +285,4 @@ def food_guide(
     try:
         return foodguide_module.build(d.week if d else None, month, need, context.diet, list(context.allergies))
     except KeyError as exc:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"Unknown need: {need}") from exc
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, f"Unknown need: {need}") from exc

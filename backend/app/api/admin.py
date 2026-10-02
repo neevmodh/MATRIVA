@@ -109,7 +109,7 @@ async def upload_document(
     try:
         parsed = DocumentMetadataRequest.model_validate(json.loads(metadata))
     except (json.JSONDecodeError, TypeError, ValueError) as exc:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="metadata must be valid JSON") from exc
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="metadata must be valid JSON") from exc
 
     filename = sanitize_filename(file.filename)
     extension = Path(filename).suffix.lower()
@@ -124,7 +124,7 @@ async def upload_document(
         db.commit()
     except DocumentProcessingError as exc:
         db.rollback()
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(exc)) from exc
     return _document_response(document)
 
 
@@ -248,7 +248,7 @@ def reindex(document_id: str, admin: AdminUser, db: DBSession) -> DocumentRespon
         reindex_document(db, document)
     except DocumentProcessingError as exc:
         db.commit()
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=str(exc)) from exc
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(exc)) from exc
     record_audit(db, actor_user_id=admin.id, action="document.reindex", resource_type="knowledge_document", resource_id=document.id)
     db.commit()
     return _document_response(document)
@@ -258,11 +258,11 @@ def reindex(document_id: str, admin: AdminUser, db: DBSession) -> DocumentRespon
 
 def _validate_source_ids(db: DBSession, source_ids: list[str]) -> None:
     if not source_ids:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="At least one reviewed source is required")
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="At least one reviewed source is required")
     for source_id in source_ids:
         source = db.get(KnowledgeSource, source_id)
         if source is None or source.review_status != ReviewStatus.APPROVED.value:
-            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail="All content sources must be approved")
+            raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="All content sources must be approved")
 
 
 @router.get("/food-items")

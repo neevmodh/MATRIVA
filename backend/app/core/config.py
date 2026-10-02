@@ -48,6 +48,7 @@ class Settings(BaseSettings):
     rate_limit_auth_per_minute: int = Field(default=20, ge=1, le=1000)
     rate_limit_chat_per_minute: int = Field(default=30, ge=1, le=1000)
     rate_limit_general_per_minute: int = Field(default=120, ge=1, le=5000)
+    evaluation_report_dir: str | None = None
 
     # Which engine answers questions. "local" = the offline pipeline in app/rag/local (no LLM, no embeddings,
     # no network). "external" = the Groq/Gemini pipeline (needs LLM_API_KEY / EMBEDDING_API_KEY).

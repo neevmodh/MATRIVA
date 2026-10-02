@@ -7,11 +7,12 @@ os.environ["JWT_SECRET"] = "test-secret-012345678901234567890123456789"
 os.environ["ENVIRONMENT"] = "testing"
 os.environ["DEMO_MODE"] = "true"
 os.environ["AUTO_CREATE_TABLES"] = "true"
+os.environ["REDIS_URL"] = ""
 # The legacy native orchestration tests remain hermetic regression coverage;
 # LangChain-specific tests opt in explicitly.
 os.environ["RAG_ORCHESTRATOR"] = "native"
 # Hermetic: never reach a real LLM, embedding or search provider, even if backend/.env has live keys.
-for _key in ("LLM_API_KEY", "EMBEDDING_API_KEY", "TAVILY_API_KEY"):
+for _key in ("LLM_API_KEY", "GROQ_API_KEY", "EMBEDDING_API_KEY", "GEMINI_API_KEY", "TAVILY_API_KEY"):
     os.environ[_key] = ""
 # Hermetic: never export traces. LangChain caches its tracer on first use, so a
 # single test that enables tracing would otherwise make every later test POST to

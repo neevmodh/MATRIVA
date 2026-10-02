@@ -10,7 +10,7 @@
 Modern guidelines and classical Ayurveda, reconciled week by week. Every answer names its source, or says plainly that it can't.
 
 <p>
-<img alt="backend tests" src="https://img.shields.io/badge/backend_tests-540_passing-2ea44f?style=for-the-badge&logo=pytest&logoColor=white"/>
+<img alt="backend tests" src="https://img.shields.io/badge/backend_tests-566_passing-2ea44f?style=for-the-badge&logo=pytest&logoColor=white"/>
 <img alt="e2e" src="https://img.shields.io/badge/e2e-12_passing-2ea44f?style=for-the-badge&logo=playwright&logoColor=white"/>
 <img alt="vulnerabilities" src="https://img.shields.io/badge/npm_audit-0_vulnerabilities-2ea44f?style=for-the-badge&logo=npm&logoColor=white"/>
 </p>
@@ -122,7 +122,7 @@ Just chatting works too: saying *"my Hb is 9.8"* or *"I ate 2 roti and dal"* rec
 | **Works offline** | Yes. The default engine needs no API key and no internet |
 | **Guard rails** | 1,231 sourced rules (918 medicines, 205 herbs, foods and exposures, 108 more) |
 | **Knowledge base** | 668 passages that answer questions once an admin approves them: the Prasuti Tantra (567) plus WHO, NHS, ICMR-NIN and Government of India guidance (101) |
-| **Tests** | 540 backend · 43 ingestion · 36 evaluation · 12 end-to-end |
+| **Tests** | 566 backend · 43 ingestion · 36 evaluation · 12 end-to-end |
 | **Clinical review** | **Pending**: see [honest limits](#-honest-limits) |
 
 ---
@@ -323,7 +323,7 @@ A modular monolith **on purpose**: RAG, safety, API, ingestion and evaluation ar
 
 | Suite | Result |
 |---|---|
-| Backend (unit, integration, RAG, care features, guard rails) | **540 passing** |
+| Backend (unit, integration, RAG, care features, guard rails) | **566 passing** |
 | Ingestion | **43 passing** |
 | Evaluation harnesses | **36 passing** |
 | Frontend end-to-end (Playwright, mocked API) | **12 passing** |
@@ -337,7 +337,7 @@ CI runs the backend (ruff, secret scan, mypy, pytest), ingestion, evaluation and
 
 ## 🚀 Run it
 
-**You need:** Python 3.11+ and Node 20+. Docker is optional. No API key is needed: the default engine runs offline.
+**You need:** Python 3.11 or 3.14 and Node 24. Docker is optional. No API key is needed: the default engine runs offline. CI tests both Python versions; production containers use 3.11.
 
 **1. Backend**
 
@@ -345,7 +345,7 @@ CI runs the backend (ruff, secret scan, mypy, pytest), ingestion, evaluation and
 cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
-cp ../.env.example .env            # then set JWT_SECRET to 32+ random characters
+cp .env.example .env               # local SQLite config; set a unique JWT_SECRET
 alembic upgrade head               # creates the schema (SQLite by default)
 uvicorn app.main:app --reload --port 8010     # interactive docs at http://localhost:8010/docs
 ```
@@ -413,7 +413,7 @@ post-check remain independent and fail closed.
 <summary><b>Run the tests</b></summary>
 
 ```bash
-cd backend && pytest -q                       # 540 tests
+cd backend && pytest -q                       # 566 tests
 cd backend && ruff check . && mypy app/       # lint and types
 cd ingestion && pytest tests/                 # 43 tests
 cd evaluation && pytest tests/                # 36 tests
@@ -446,7 +446,7 @@ matriva/
 │   ├── app/data/             ontology.yaml, care_rules.yaml, food_guide.yaml, foods_nutrients.json, book_index.json, library.yaml
 │   ├── app/data/guardrails/  the rule files (medicines, herbs, foods, symptoms, requests, conditions, output)
 │   ├── alembic/versions/     migrations 0001 to 0005
-│   └── tests/                540 tests
+│   └── tests/                566 tests
 ├── ingestion/                OCR, chunking, book-structure recovery
 ├── evaluation/               retrieval / generation / safety / hallucination harnesses + held-out sets
 ├── knowledge/                seed guidelines, foods, the Ayurveda source, resource library builder

@@ -15,11 +15,9 @@ Two modes, same pattern as generation/run.py:
   (e.g. "screening", "risk") as relevance, while semantic similarity can
   actually tell "genetic risk of Down syndrome screening" apart from an ANC
   visit-schedule document even though they share vocabulary.
-- KEYWORD (no key available): falls back to the original keyword-overlap
-  path. Known limitation, unchanged: a keyword score of exactly 0 is the
-  only thing this mode can reliably treat as "no evidence" -- any shared
-  word produces a false "sufficient evidence" signal. See PROGRESS.md
-  (2026-09-24, issue #19).
+- KEYWORD (no key available): requires query-term coverage as well as a
+  positive overlap score. This rejects incidental shared words, but remains
+  a lexical heuristic rather than proof that a passage answers the question.
 """
 
 from __future__ import annotations
@@ -121,7 +119,8 @@ def run_evaluation() -> dict:
         packet = build_context_packet(question, retrieval.chunks, safety_result={})
         try:
             response = generate_or_insufficient_evidence(
-                packet, retrieval.chunks, scoring_mode=retrieval.scoring_mode, client=_PoisonClient()
+                packet, retrieval.evidence_chunks or retrieval.chunks,
+                scoring_mode=retrieval.scoring_mode, client=_PoisonClient()
             )
             llm_was_called = False
         except AssertionError:

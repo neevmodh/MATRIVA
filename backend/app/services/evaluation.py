@@ -8,10 +8,14 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.config import get_settings
 from app.models import EvaluationRun, KnowledgeChunk, User
 from app.safety.classifier import classify_query
 
-REPORT_DIR = Path(__file__).resolve().parents[3] / "evaluation" / "reports"
+REPORT_DIR = Path(
+    get_settings().evaluation_report_dir
+    or Path(__file__).resolve().parents[3] / "evaluation" / "reports"
+)
 
 
 def _safety_metrics() -> dict[str, Any]:

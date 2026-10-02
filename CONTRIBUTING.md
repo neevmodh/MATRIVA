@@ -8,9 +8,9 @@ Thank you for helping. This is a health product, so the bar is: **say what you c
 git clone https://github.com/neevmodh/MATRIVA && cd MATRIVA
 cd backend && python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
-cp ../.env.example .env              # set JWT_SECRET to 32+ random characters
+cp .env.example .env                # local SQLite config; set a unique JWT_SECRET
 alembic upgrade head
-pytest -q                            # 540 tests should pass
+pytest -q                            # 566 tests should pass
 cd ../frontend && npm install && npm run dev
 ```
 

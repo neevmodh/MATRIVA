@@ -24,7 +24,7 @@ from app.models import KnowledgeDocument as KnowledgeDocumentRow
 from app.models import KnowledgeSource as KnowledgeSourceRow
 from app.models import ReviewStatus as ReviewStatusValue
 from app.rag.embeddings import embed_text
-from app.rag.keyword_search import keyword_overlap_score
+from app.rag.keyword_search import MIN_KEYWORD_RELEVANCE, keyword_overlap_score
 from app.rag.vector_store import VectorStore, cosine_similarity
 from app.schemas.knowledge import Domain, KnowledgeChunk
 
@@ -42,6 +42,9 @@ class RetrievalResult:
     # produced these scores, since a fixed "> 0.0" threshold that's correct
     # for keyword scoring silently stops working for vector scoring.
     scoring_mode: str = "keyword"
+    # Grounding uses unboosted cosine scores; keyword ranking bonuses must
+    # never turn a weak vector match into sufficient semantic evidence.
+    evidence_chunks: list[tuple[KnowledgeChunk, float]] | None = None
 
 
 def apply_metadata_filters(
@@ -130,8 +133,14 @@ def hybrid_retrieve(
         result_pool = scored
 
     result_pool.sort(key=lambda pair: pair[1], reverse=True)
+    selected = result_pool[:k]
+    original_scores = {chunk.chunk_id: score for chunk, score in pool}
     return RetrievalResult(
-        chunks=result_pool[:k], used_fallback=used_fallback, scoring_mode=scoring_mode
+        chunks=selected, used_fallback=used_fallback, scoring_mode=scoring_mode,
+        evidence_chunks=(
+            [(chunk, original_scores[chunk.chunk_id]) for chunk, _score in selected]
+            if scoring_mode == "vector" else selected
+        ),
     )
 
 
@@ -181,7 +190,6 @@ _STOPWORDS = {
 # working while still rejecting a long unrelated/adversarial query that
 # shares only one incidental word with a document (a 7-8 token query with a
 # single overlap scores ~0.13-0.14, well under this floor).
-MIN_KEYWORD_RELEVANCE = 0.3
 
 # Verified live: "When is my next prenatal checkup?" scored a flat 0 against
 # the FOGSI antenatal-care document and fell through to "insufficient

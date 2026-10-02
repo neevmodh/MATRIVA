@@ -11,14 +11,14 @@ permissions:
 # pull_request_target runs with write access, so this workflow must NEVER check out or run PR code.
 jobs:
   label:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/labeler@v5
         with:
           sync-labels: true
 
   size:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/github-script@v7
         with:
@@ -38,7 +38,7 @@ jobs:
             await github.rest.issues.addLabels({...context.repo, issue_number: pr.number, labels: [`size/${size}`]});
 
   semantic-title:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: amannn/action-semantic-pull-request@v5
         env:

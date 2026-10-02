@@ -18,20 +18,16 @@ from __future__ import annotations
 
 from app.llm.groq_client import Groq, generate_from_packet
 from app.rag.context_packet import ContextPacket
+from app.rag.keyword_search import MIN_KEYWORD_RELEVANCE, keyword_query_coverage
 from app.schemas.knowledge import KnowledgeChunk
 
 INSUFFICIENT_EVIDENCE_RESPONSE = (
     "I don't have enough evidence in the available knowledge base to answer that reliably."
 )
 
-# 0.0 is the right threshold for "keyword" scoring (#6's fallback path when
-# no live embeddings are available): a score of exactly 0 means no keyword
-# overlap at all. It is NOT a safe default for "vector" scoring -- cosine
-# similarity is rarely exactly 0 for unrelated text, so this threshold would
-# silently stop guarding anything once real embeddings are wired in.
-# DEFAULT_MIN_SCORE_BY_MODE keys off #6's RetrievalResult.scoring_mode so the
-# right threshold is picked automatically instead of relying on every caller
-# to remember to override it.
+# Keyword mode requires a positive score AND query coverage when a question
+# is supplied. Vector mode uses a cosine floor against unboosted evidence
+# scores; ranking bonuses do not count as semantic relevance.
 DEFAULT_MIN_SCORE = 0.0
 _VECTOR_MIN_SCORE = 0.75  # cosine similarity floor; revisit once real embeddings are live and this can be tuned against actual data
 DEFAULT_MIN_SCORE_BY_MODE = {"keyword": DEFAULT_MIN_SCORE, "vector": _VECTOR_MIN_SCORE}
@@ -41,6 +37,7 @@ def has_sufficient_evidence(
     scored_chunks: list[tuple[KnowledgeChunk, float]],
     min_score: float | None = None,
     scoring_mode: str = "keyword",
+    query: str | None = None,
 ) -> bool:
     """True if at least one retrieved chunk clears the relevance bar.
 
@@ -48,10 +45,19 @@ def has_sufficient_evidence(
     see DEFAULT_MIN_SCORE_BY_MODE) -- pass #6's RetrievalResult.scoring_mode
     here rather than relying on the keyword-only default. `min_score`
     overrides the mode-based default explicitly when given.
+    Generation callers always supply the question; the query-less form is
+    retained for score-only integrations and does not assess topical coverage.
     """
     if min_score is None:
         min_score = DEFAULT_MIN_SCORE_BY_MODE.get(scoring_mode, DEFAULT_MIN_SCORE)
-    return any(score > min_score for _chunk, score in scored_chunks)
+    return any(
+        score > min_score
+        and (
+            scoring_mode != "keyword" or query is None
+            or keyword_query_coverage(query, chunk.content) >= MIN_KEYWORD_RELEVANCE
+        )
+        for chunk, score in scored_chunks
+    )
 
 
 def generate_or_insufficient_evidence(
@@ -66,6 +72,8 @@ def generate_or_insufficient_evidence(
     """Section 43's guarantee: if evidence is insufficient, return the fixed
     response WITHOUT calling the LLM at all -- the model never gets a chance
     to fill the gap from general knowledge."""
-    if not has_sufficient_evidence(scored_chunks, min_score=min_score, scoring_mode=scoring_mode):
+    if not has_sufficient_evidence(
+        scored_chunks, min_score=min_score, scoring_mode=scoring_mode, query=context_packet.user_question,
+    ):
         return INSUFFICIENT_EVIDENCE_RESPONSE
     return generate_from_packet(context_packet, client=client, **generate_kwargs)
