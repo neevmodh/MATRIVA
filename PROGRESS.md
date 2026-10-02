@@ -19,6 +19,12 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-02 — @neevmodh — Keep generated Next.js types out of Git
+
+- Stop tracking `frontend/next-env.d.ts`, which Next.js rewrites when switching between development and production. Keep the generated local file available for the running app.
+- Generate Next.js types before TypeScript checks so clean checkouts can typecheck without a prior build.
+- Validation: frontend lint and typecheck pass, including an isolated checkout with no generated types or build output; documentation links and whitespace checks pass.
+
 ### 2026-10-02 — @neevmodh — Verify Python 3.14 setup and database compatibility
 
 - A clean Python 3.14 install failed because Psycopg 3.2.4 has no compatible binary wheel. Updated Psycopg to 3.3.6 and SQLAlchemy to 2.0.54 in backend/ingestion, with explicit DELETE-result typing from @BhavyaSoneji's PR #4.
