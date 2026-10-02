@@ -305,5 +305,5 @@ def test_build_context_packet_with_web_sources_renders_separate_section() -> Non
     packet = build_context_packet("q", [], safety_result={}, web_sources=[web])
     text = packet.to_prompt_text()
     assert "EXTERNAL WEB SOURCES" in text
-    assert "https://example.com/a" in text
+    assert web.url in text
     assert "example.com" in text

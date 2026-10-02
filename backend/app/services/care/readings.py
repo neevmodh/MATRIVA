@@ -110,10 +110,10 @@ def weight_gain(rows: list[HealthReading], dating: Dating | None) -> dict[str, A
 
 # ------------------------------------------------------------------------------------------------ report parsing
 _DATE = re.compile(r"\b(\d{1,2})[/\-.](\d{1,2})[/\-.](\d{2,4})\b|\b(\d{4})-(\d{2})-(\d{2})\b")
-_HB = re.compile(r"\b(?:hb|hgb|haemoglobin|hemoglobin)\b(?:\s*(?:is|was|of|came|at|about|around)\b)?\s*[:=\-]?\s*(\d{1,3}(?:\.\d{1,2})?)\s*(g\s*/?\s*d?l|gm\s*%?|g%|g/l)?", re.I)
-_BP = re.compile(r"(?:\b(?:bp|blood pressure)\b(?:\s*(?:is|was|of|came|at|about|around)\b)?\s*[:=\-]?\s*)(\d{2,3})\s*[/\\]\s*(\d{2,3})|\b(\d{2,3})\s*[/\\]\s*(\d{2,3})\s*mm\s*hg", re.I)
-_WEIGHT = re.compile(r"\b(?:weight|wt)\b(?:\s*(?:is|was|of|came|at|about|around)\b)?\s*[:=\-]?\s*(\d{2,3}(?:\.\d)?)\s*kgs?\b", re.I)
-_GLUCOSE = re.compile(r"\b(fasting|fbs|ppbs|pp|post[\s-]?prandial|random|rbs)?\s*(?:blood\s*)?(?:glucose|sugar|fbs|ppbs|rbs)\b(?:\s*(?:is|was|of|came|at|about|around)\b)?\s*[:=\-]?\s*(\d{2,3}(?:\.\d)?)\s*(?:mg\s*/?\s*dl)?", re.I)
+_HB = re.compile(r"\b(?:hb|hgb|haemoglobin|hemoglobin)\b(?: ?(?:is|was|of|came|at|about|around)\b)? ?[:=\-]? ?(\d{1,3}(?:\.\d{1,2})?) ?(g ?/? ?d?l|gm ?%?|g%|g/l)?", re.I)
+_BP = re.compile(r"(?:\b(?:bp|blood pressure)\b(?: ?(?:is|was|of|came|at|about|around)\b)? ?[:=\-]? ?)(\d{2,3}) ?[/\\] ?(\d{2,3})|\b(\d{2,3}) ?[/\\] ?(\d{2,3}) ?mm ?hg", re.I)
+_WEIGHT = re.compile(r"\b(?:weight|wt)\b(?: ?(?:is|was|of|came|at|about|around)\b)? ?[:=\-]? ?(\d{2,3}(?:\.\d)?) ?kgs?\b", re.I)
+_GLUCOSE = re.compile(r"\b(fasting|fbs|ppbs|pp|post[\s-]?prandial|random|rbs)? ?(?:blood ?)?(?:glucose|sugar|fbs|ppbs|rbs)\b(?: ?(?:is|was|of|came|at|about|around)\b)? ?[:=\-]? ?(\d{2,3}(?:\.\d)?) ?(?:mg ?/? ?dl)?", re.I)
 
 
 def _find_date(text: str, fallback: date) -> date:
@@ -133,6 +133,7 @@ def parse_report_text(text: str, today: date | None = None) -> list[dict[str, An
     """Candidate readings found in the text of a lab report or prescription. The user confirms them before they are saved:
     OCR and regexes make mistakes, and a wrong haemoglobin could mislead."""
     today = today or date.today()
+    text = " ".join(text.split())  # linear whitespace normalization before bounded regexes
     when = _find_date(text, today).isoformat()
     out: list[dict[str, Any]] = []
     for m in _HB.finditer(text):

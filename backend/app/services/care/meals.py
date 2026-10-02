@@ -8,6 +8,7 @@ with the pregnancy allowance (care_rules.yaml). Portions and Indian-food matches
 from __future__ import annotations
 
 import re
+from math import isfinite
 from datetime import date
 from typing import Any
 
@@ -18,10 +19,10 @@ from app.models import MealLog, User
 from app.services.care.rules import foods, rules
 
 _WORD_NUMBERS = {"a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "half": 0.5}
-_SPLIT = re.compile(r"\s*(?:,|;|\n|\+|\band\b|\bwith\b|\bplus\b|&)\s*", re.I)
+_SPLIT = re.compile(r"(?:,|;|\n|\+|\band\b|\bwith\b|\bplus\b|&)", re.I)
 _CHUNK = re.compile(
-    r"^\s*(?P<q>\d+(?:\.\d+)?(?:\s*/\s*\d+)?|a|an|one|two|three|four|five|six|half)?\s*"
-    r"(?P<u>katoris?|bowls?|cups?|glass(?:es)?|tbsp|tsp|handfuls?|pieces?|pcs|slices?|grams?|gms?|g|ml)?\s*(?:of\s+)?(?P<name>.+?)\s*$",
+    r"^(?P<q>-?\d{1,6}(?:\.\d{1,6})?(?: ?/ ?\d{1,6})?(?![\d./])|a|an|one|two|three|four|five|six|half)? ?"
+    r"(?P<u>katoris?|bowls?|cups?|glass(?:es)?|tbsp|tsp|handfuls?|pieces?|pcs|slices?|grams?|gms?|g|ml)? ?(?:of )?(?P<name>.+)$",
     re.I,
 )
 _NOISE = re.compile(r"\b(cooked|boiled|fried|fresh|raw|plain|small|large|medium|some|little|bit of|the|my|for|lunch|dinner|breakfast|snack)\b", re.I)
@@ -67,10 +68,22 @@ def parse_meal(text: str) -> dict[str, list[Any]]:
         chunk = chunk.strip()
         if not chunk:
             continue
-        m = _CHUNK.match(_NOISE.sub(" ", chunk))
+        # Collapse whitespace in linear time before matching optional fields.
+        m = _CHUNK.match(" ".join(_NOISE.sub(" ", chunk).split()))
         if not m or not m.group("name").strip():
             continue
-        qty, unit = _number(m.group("q")), (m.group("u") or "").lower()
+        if m.group("q") is None and m.group("name")[0] in "-0123456789":
+            unknown.append(chunk)
+            continue
+        try:
+            qty = _number(m.group("q"))
+        except (ValueError, ZeroDivisionError, OverflowError):
+            unknown.append(chunk)
+            continue
+        if qty is not None and (not isfinite(qty) or qty <= 0):
+            unknown.append(chunk)
+            continue
+        unit = (m.group("u") or "").lower()
         unit = _UNIT_NORMAL.get(unit, unit)
         found = _match_food(m.group("name"))
         if found is None:

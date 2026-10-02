@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime, time, timedelta, timezone
+from urllib.parse import urlsplit
 
 import pytest
 from fastapi.testclient import TestClient
@@ -140,7 +141,9 @@ def test_checkin_requires_consent(client: TestClient, auth_headers) -> None:
 # ------------------------------------------------------------------------------------------------ readings
 def test_reading_flags_follow_the_cited_thresholds(client: TestClient, me) -> None:
     low = client.post("/care/readings", headers=me, json={"kind": "hb", "value": 9.8}).json()
-    assert low["flags"][0]["level"] == "discuss" and "11" in low["flags"][0]["message"] and low["flags"][0]["url"].startswith("https://www.who.int")
+    assert low["flags"][0]["level"] == "discuss" and "11" in low["flags"][0]["message"]
+    source_url = urlsplit(low["flags"][0]["url"])
+    assert source_url.scheme == "https" and source_url.hostname == "www.who.int"
     assert client.post("/care/readings", headers=me, json={"kind": "hb", "value": 11.5}).json()["flags"] == []
     high = client.post("/care/readings", headers=me, json={"kind": "bp", "systolic": 148, "diastolic": 96}).json()
     assert high["flags"][0]["level"] == "urgent" and "today" in high["flags"][0]["message"]
@@ -205,6 +208,34 @@ def test_meal_parser_understands_everyday_portions() -> None:
     assert by["Milk (2% fat)"]["grams"] == 250 and by["Banana (kela)"]["grams"] == 100 and by["Plain yogurt (dahi / curd)"]["grams"] == 150
     assert p["unknown"] == ["some pizza"] and all(i["approximate"] for i in p["items"])
     assert meals.parse_meal("zzz qqq")["items"] == []
+
+
+@pytest.mark.parametrize("text", ["1/0 roti", "0 roti", "-2 roti", "0/2 cups dal", "999999999 roti"])
+def test_invalid_portions_are_not_guessed_or_logged(client: TestClient, me, text) -> None:
+    parsed = meals.parse_meal(text)
+    assert parsed["items"] == [] and parsed["unknown"] == [text]
+    assert client.post("/care/meals", headers=me, json={"text": text}).status_code == 422
+
+
+def test_portion_parser_preserves_fractions_and_normalized_whitespace() -> None:
+    parsed = meals.parse_meal("  1 / 2   cup  of   milk  ,  2   roti  ")
+    assert [item["grams"] for item in parsed["items"]] == [100, 60]
+
+
+def test_parsers_finish_on_adversarial_whitespace() -> None:
+    import subprocess
+    import sys
+
+    # A process timeout prevents a regressed regex from hanging the test runner.
+    subprocess.run([sys.executable, "-c", '''from app.services.care import meals, readings
+space = " " * 20000
+assert readings.parse_report_text("Hb" + space + "x") == []
+assert readings.parse_report_text("glucose" + space + "x") == []
+assert readings.parse_report_text("weight" + space + "x") == []
+assert readings.parse_report_text("120" + space + "x") == []
+assert meals.parse_meal("a" + space + "x")["items"] == []
+assert meals.parse_meal(space + "x")["items"] == []
+'''], timeout=5, check=True)
 
 
 def test_meal_endpoint_totals_and_gaps(client: TestClient, me) -> None:

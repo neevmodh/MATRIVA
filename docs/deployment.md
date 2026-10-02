@@ -38,7 +38,7 @@ For a local API-only run:
 cd backend
 python -m pip install -r requirements.txt
 alembic upgrade head
-python ../database/seed/seed.py  # optional synthetic demo data
+python ../database/seed/seed.py  # optional; set DEMO_PASSWORD first (database/seed/README.md)
 uvicorn app.main:app --reload
 ```
 
@@ -73,7 +73,7 @@ cd frontend && npm ci && npx playwright install chromium
 cd .. && python scripts/docker_smoke.py --browser
 ```
 
-This builds the production images, starts fresh PostgreSQL/pgvector and password-protected Redis, upgrades and re-runs migrations, and checks readiness, public images, authentication, consent, care plans, emergency routing, document approval, report writes, shared quotas, export and account deletion. The browser uses the actual frontend and API, including CORS and streaming. It generates synthetic credentials and overrides every Compose interpolation with a temporary environment file, without loading your `.env`. Only its uniquely named containers and volumes are removed afterward. Omit `--browser` for HTTP-only checks.
+This builds the production images, starts fresh PostgreSQL/pgvector and password-protected Redis, upgrades and re-runs migrations, and checks readiness, public images, authentication, consent, care plans, emergency routing, document approval, report writes, shared quotas, export and account deletion. The browser uses the actual frontend and API, including CORS and streaming. Synthetic credentials are passed through the Compose process environment; an empty temporary environment file prevents loading your `.env` without storing passwords on disk. Only its uniquely named containers and volumes are removed afterward. Omit `--browser` for HTTP-only checks.
 
 ## Production checklist
 

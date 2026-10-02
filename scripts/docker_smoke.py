@@ -65,7 +65,9 @@ def main():
         values["DATABASE_URL"] = f"postgresql+psycopg://smoke:{values['POSTGRES_PASSWORD']}@db:5432/smoke"
         values["REDIS_URL"] = f"redis://:{values['REDIS_PASSWORD']}@redis:6379/0"
         values["VECTOR_DATABASE_URL"] = values["DATABASE_URL"]
-        env_file.write_text("\n".join(f"{key}={value}" for key, value in values.items()) + "\n")
+        # Compose reads synthetic secrets from its process environment, never disk.
+        # The empty file explicitly prevents loading the checkout's .env.
+        env_file.write_text("")
         env_file.chmod(0o600)
         override = temporary / "ports.yml"
         override.write_text(f'''services:
@@ -73,6 +75,10 @@ def main():
     ports: ["127.0.0.1:{api_port}:8000"]
     environment:
       FORWARDED_ALLOW_IPS: "127.0.0.1"
+      RAG_ENGINE: "local"
+      LLM_API_KEY: ""
+      EMBEDDING_API_KEY: ""
+      TAVILY_API_KEY: ""
   frontend:
     ports: ["127.0.0.1:{web_port}:3000"]
 ''')

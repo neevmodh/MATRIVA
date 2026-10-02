@@ -80,3 +80,15 @@ def test_limited_requests_are_counted_once(client, monkeypatch):
     before = sum(metrics.snapshot()["requests"].values())
     assert client.get("/profile").status_code == 429
     assert sum(metrics.snapshot()["requests"].values()) == before + 1
+
+
+def test_database_errors_do_not_include_sensitive_parameter_values():
+    from sqlalchemy import text
+    from sqlalchemy.exc import SQLAlchemyError
+
+    from app.core.db import SessionLocal
+
+    private_value = "synthetic private health note"
+    with SessionLocal() as db, pytest.raises(SQLAlchemyError) as error:
+        db.execute(text("SELECT * FROM nonexistent_table WHERE note = :private"), {"private": private_value})
+    assert private_value not in str(error.value)

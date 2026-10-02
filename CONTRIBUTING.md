@@ -10,7 +10,7 @@ cd backend && python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
 cp .env.example .env                # local SQLite config; set a unique JWT_SECRET
 alembic upgrade head
-pytest -q                            # 554 tests should pass
+pytest -q                            # 566 tests should pass
 cd ../frontend && npm install && npm run dev
 ```
 

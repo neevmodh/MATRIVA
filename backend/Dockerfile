@@ -19,7 +19,11 @@ COPY requirements.txt requirements-optional.txt ./
 ARG INSTALL_OPTIONAL=false
 RUN pip install --no-cache-dir -r requirements.txt \
     && if [ "$INSTALL_OPTIONAL" = "true" ]; then pip install --no-cache-dir -r requirements-optional.txt; fi \
-    && pip check
+    && pip check \
+    && python -m venv /tmp/audit \
+    && /tmp/audit/bin/pip install --no-cache-dir pip-audit==2.10.1 \
+    && /tmp/audit/bin/pip-audit --path /usr/local/lib/python3.11/site-packages \
+    && rm -rf /tmp/audit
 
 COPY app ./app
 COPY alembic ./alembic

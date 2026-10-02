@@ -37,6 +37,6 @@ The canonical book PDF, OCR text, book index, curated datasets, migrations, test
 
 ## Reliability validation
 
-The follow-up fixes add shared Redis quotas across API routes, CORS headers on limit/outage responses, 503 readiness for failed dependencies, bounded route labels in metrics and trusted-proxy defaults. Patched FastAPI/Starlette, PyJWT, multipart, Requests and pytest pins clear the installed-package vulnerability audit. Current regression totals are 554 backend, 43 ingestion, 36 evaluation and 12 mocked browser tests, plus one production browser integration through the actual Docker frontend/API. See [testing](./testing.md) and [deployment](./deployment.md) for repeatable commands and their limits.
+The follow-up fixes add shared Redis quotas across API routes, CORS headers on limit/outage responses, 503 readiness for failed dependencies, bounded route labels in metrics and trusted-proxy defaults. Patched FastAPI/Starlette, PyJWT, multipart, Requests and pytest pins clear the installed-package vulnerability audit. Current regression totals are 566 backend, 43 ingestion, 36 evaluation and 12 mocked browser tests, plus one production browser integration through the actual Docker frontend/API. See [testing](./testing.md) and [deployment](./deployment.md) for repeatable commands and their limits.
 
 Test results and GitHub check links are recorded in the cleanup pull request.
