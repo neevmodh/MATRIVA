@@ -29,7 +29,7 @@ No API key is needed: `RAG_ENGINE=local` is the default. Settings are listed in 
 | `app/models/`, `app/schemas/` | SQLAlchemy entities and Pydantic contracts |
 | `alembic/versions/` | Migrations `0001` to `0005` |
 | `scripts/` | `ingest_real_knowledge.py`, `build_book_index.py`, `secret_scan.py`, `verify_pgvector_live.py` |
-| `tests/` | 540 tests |
+| `tests/` | 554 tests |
 
 ## Scripts
 
@@ -52,4 +52,4 @@ Everything `ingest_real_knowledge.py` inserts is **pending**: an admin approves 
 | Add an endpoint | Router in `app/api/`, logic in `app/services/`, schema in `app/schemas/`, a test, and a row in [`../docs/api.md`](../docs/api.md) |
 | Run the checks | `pytest -q && ruff check . && mypy app/` |
 
-`ruff` is pinned in `requirements-dev.txt`. Some files outside the areas below have existing `ruff` and `mypy` findings; keep your own changes clean.
+`ruff` is pinned in `requirements-dev.txt`. Ruff and mypy pass across the backend; keep both checks green.

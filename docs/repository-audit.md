@@ -31,8 +31,12 @@ The canonical book PDF, OCR text, book index, curated datasets, migrations, test
 
 ## Follow-up findings
 
-- `main` has no branch protection; this is already recorded in [SECURITY.md](../SECURITY.md).
-- The frontend Docker runtime stage does not copy `public/`, although the application references images in `public/plates/`. Container asset packaging needs a separate deployment fix and container verification.
-- The legacy hallucination harness scored 3/11 in offline keyword mode, its already-documented fallback limitation. The removed historical snapshot scored 11/11 in vector mode; those modes cannot be treated as equivalent. The scoring datasets and harness remain available for further evaluation.
+- Resolved: `main` requires pull requests and all six CI jobs, including the production smoke check. Admin enforcement, conversation resolution and force-push/deletion prevention are enabled.
+- Resolved: frontend public images are included in the runtime image and checked against the built container. Redis authentication/readiness, writable reports, OCR availability and provider pin consistency are covered by the production smoke runner.
+- Resolved for the existing benchmark: the legacy offline hallucination harness now scores 11/11 after adding query coverage to its grounding gate, and CI asserts all cases abstain before generation. Vector grounding uses unboosted cosine scores. Lexical heuristics and a small benchmark still do not prove clinical answer quality; independent datasets and human review remain necessary.
+
+## Reliability validation
+
+The follow-up fixes add shared Redis quotas across API routes, CORS headers on limit/outage responses, 503 readiness for failed dependencies, bounded route labels in metrics and trusted-proxy defaults. Patched FastAPI/Starlette, PyJWT, multipart, Requests and pytest pins clear the installed-package vulnerability audit. Current regression totals are 554 backend, 43 ingestion, 36 evaluation and 12 mocked browser tests, plus one production browser integration through the actual Docker frontend/API. See [testing](./testing.md) and [deployment](./deployment.md) for repeatable commands and their limits.
 
 Test results and GitHub check links are recorded in the cleanup pull request.

@@ -13,8 +13,6 @@ What is left. Most of it needs people, not code. Issue numbers refer to the GitH
 | Legal review under the DPDP Act: retention, breach process, consent wording | Health data | A lawyer | #81 |
 | Decide whether profile deletion should also delete chat history | Today only account deletion does ([`privacy.md`](./privacy.md#a-gap-to-know-about)) | A product decision, then a small change | |
 | Confirm the Round 1 submission status | The Sep 25 date has passed | A team member | #68, #76 |
-| Branch protection on `main` | Direct pushes are possible | A repository admin | #21 |
-| Rate limits on the care, profile, privacy and resources routes | Only auth, chat and the knowledge routes are limited today | A small change in `main.py` | |
 
 ## Product
 
@@ -39,7 +37,6 @@ What is left. Most of it needs people, not code. Issue numbers refer to the GitH
 
 | Item | Issue |
 |---|---|
-| CI step: a docs link check and `alembic upgrade head` on an empty database | #90 |
 | Per-rule disable switch and an admin view of which rules fire | |
 | Split `backend/app/data/guardrails/medications.yaml` (old grouped entries) into per-drug rules, then retire the grouped file | |
 
@@ -47,3 +44,5 @@ What is left. Most of it needs people, not code. Issue numbers refer to the GitH
 
 - Diagnosing, prescribing, dosing, or telling anyone to start, stop or change a medicine. This is a design rule, not a gap.
 - A generative model writing medical text unreviewed. The default engine only quotes approved passages.
+
+Completed on October 2: protected `main`, Redis quotas across API routes, a local documentation-link check in CI, and fresh PostgreSQL migrations plus a real production Docker/browser smoke test. See [testing](./testing.md).

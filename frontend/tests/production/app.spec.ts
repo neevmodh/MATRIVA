@@ -1,0 +1,44 @@
+import { expect, test } from "@playwright/test";
+
+test("production signup, consent, care, streaming chat, export and deletion", async ({ page, request }) => {
+  const errors: string[] = [];
+  page.on("pageerror", error => errors.push(error.message));
+  const email = `browser-${Date.now()}@example.com`;
+  await page.goto("/signup");
+  await page.getByLabel(/Full name/).fill("Synthetic Browser Test");
+  await page.getByLabel("Email", { exact: true }).fill(email);
+  await page.getByLabel("Password", { exact: true }).fill("StrongPass123");
+  await page.getByRole("button", { name: /Sign up/ }).click();
+  await expect(page).toHaveURL(/\/onboarding$/);
+  await page.getByLabel(/How many weeks pregnant/).fill("20");
+  await page.getByRole("checkbox", { name: /I agree that MATRIVA stores/ }).check();
+  await page.getByRole("button", { name: "Start chatting" }).click();
+  await expect(page).toHaveURL(/\/chat$/);
+  await page.getByRole("button", { name: /My week/ }).first().click();
+  await expect(page.getByRole("heading", { name: "Your week" })).toBeVisible();
+  await page.getByPlaceholder(/Ask anything/).fill("I have heavy bleeding");
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(page.getByText(/112|emergency medical help|emergency care/i).last()).toBeVisible();
+  await expect(page.getByRole("button", { name: "Stop generating" })).not.toBeVisible();
+  const token = await page.evaluate(() => localStorage.getItem("matriva_token"));
+  expect(token).toBeTruthy();
+  const headers = { Authorization: `Bearer ${token}` };
+  const exported = await request.get(`${process.env.SMOKE_API_URL}/privacy/export`, { headers });
+  expect(exported.ok()).toBeTruthy();
+  const data = await exported.json();
+  expect(data.profile.consent).toBe(true);
+  expect(data.pregnancy.current_week).toBe(20);
+  expect(data.conversations.some((conversation: { messages: { role: string }[] }) =>
+    conversation.messages.some(message => message.role === "assistant"))).toBe(true);
+  await page.goto("/settings");
+  await expect(page.getByText(/Data-sharing consent granted/)).toBeVisible();
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("button", { name: "Export my data" }).click();
+  expect((await downloadPromise).suggestedFilename()).toMatch(/\.json$/);
+  await page.getByRole("button", { name: /Delete my account/ }).click();
+  await page.getByPlaceholder("DELETE", { exact: true }).fill("DELETE");
+  await page.getByRole("button", { name: /Permanently delete/ }).click();
+  await expect(page).toHaveURL(/\/(login)?$/);
+  expect((await request.get(`${process.env.SMOKE_API_URL}/profile`, { headers })).status()).toBe(401);
+  expect(errors).toEqual([]);
+});

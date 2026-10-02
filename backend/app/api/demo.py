@@ -12,7 +12,7 @@ def next_visit(current_week: int = Query(default=18, ge=1, le=42)) -> NextVisitR
     next_week = next((week for week in ANC_CONTACT_WEEKS if week >= current_week), None)
     if next_week is None:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="The configured contact schedule has no next visit at or after this week",
         )
     return NextVisitResponse(

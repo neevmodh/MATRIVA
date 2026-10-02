@@ -12,6 +12,10 @@ _STOPWORDS = {
     "to", "and", "or", "my", "me", "i", "do", "does", "can", "any", "with",
 }
 
+# The SQL keyword adapter uses the same coverage floor. Raw overlap counts
+# alone cannot distinguish a topical match from one incidental shared word.
+MIN_KEYWORD_RELEVANCE = 0.3
+
 
 def tokenize(text: str) -> set[str]:
     return {w for w in re.findall(r"[a-z]+", text.lower()) if w not in _STOPWORDS}
@@ -19,6 +23,11 @@ def tokenize(text: str) -> set[str]:
 
 def keyword_overlap_score(query: str, text: str) -> int:
     return len(tokenize(query) & tokenize(text))
+
+
+def keyword_query_coverage(query: str, text: str) -> float:
+    terms = tokenize(query)
+    return len(terms & tokenize(text)) / len(terms) if terms else 0.0
 
 
 def contains_phrase(text: str, phrase: str) -> bool:
