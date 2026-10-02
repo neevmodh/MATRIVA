@@ -40,7 +40,6 @@ from app.rag.multi_domain import (
 )
 from app.rag.reranking import UserContext, rerank
 from app.rag.retrieval import RetrievedChunk, hybrid_retrieve, retrieve_chunks_scored
-from app.rag.tracing import run_config
 from app.rag.web_search import search_web
 from app.safety.classifier import SafetyClassification, classify
 from app.safety.post_check import (
@@ -260,7 +259,6 @@ def _langchain_answer_query(
     client: Groq | None,
     k: int,
     settings: Settings,
-    config: dict[str, Any] | None = None,
 ) -> PipelineResult:
     """Compose the complete blocking RAG path as a LangChain runnable chain.
 
@@ -313,46 +311,16 @@ def _langchain_answer_query(
             used_web_search=bool(packet.web_sources),
         )
 
-    # Explicit run names so a LangSmith trace shows each stage as its own node
-    # (with its own duration) instead of one opaque RunnableLambda blob. Purely
-    # observability: with tracing disabled these are no-ops that cost nothing.
-    prepare_step = RunnableLambda(prepare).with_config(
-        {"run_name": "1.safety+retrieval+grounding"}
-    )
+    prepare_step = RunnableLambda(prepare)
     assign_packet = RunnablePassthrough.assign(context_packet=context_packet)
     generate_step = RunnablePassthrough.assign(
-        raw_answer=(
-            RunnableLambda(context_packet).with_config({"run_name": "2.context_packet"})
-            | generation.with_config({"run_name": "3.generate"})
-        )
+        raw_answer=(RunnableLambda(context_packet) | generation)
     )
     branch = RunnableBranch(
-        (
-            has_early_result,
-            RunnableLambda(early_result).with_config({"run_name": "0.short_circuit"}),
-        ),
-        (
-            assign_packet
-            | generate_step
-            | RunnableLambda(finalize).with_config(
-                {"run_name": "4.citations+post_check"}
-            )
-        ),
+        (has_early_result, RunnableLambda(early_result)),
+        (assign_packet | generate_step | RunnableLambda(finalize)),
     )
-    chain = prepare_step | branch
-    # Caller-supplied config wins, so tracing/callbacks can be attached from
-    # outside without losing the project name and run naming. RunnableConfig is a
-    # TypedDict, so the two keys callers actually pass are set explicitly rather
-    # than splatted.
-    base = run_config(settings, orchestrator="langchain")
-    if config:
-        if config.get("callbacks") is not None:
-            base["callbacks"] = config["callbacks"]
-        if config.get("tags") is not None:
-            base["tags"] = config["tags"]
-        if config.get("metadata") is not None:
-            base["metadata"] = config["metadata"]
-    return chain.invoke(None, config=base)
+    return (prepare_step | branch).invoke(None)
 
 
 def answer_query(
@@ -364,7 +332,6 @@ def answer_query(
     profile: UserContext | None = None,
     client: Groq | None = None,
     k: int = DEFAULT_K,
-    config: dict[str, Any] | None = None,
 ) -> PipelineResult:
     """Run the full pipeline for one query.
 
@@ -372,9 +339,6 @@ def answer_query(
     keeps the original explicit Python sequence as a compatibility/rollback
     seam. An injected Groq-compatible client remains supported in both modes
     for deterministic tests without a live provider key.
-
-    ``config`` is an optional LangChain ``RunnableConfig``; pass it to attach
-    callbacks or tracing to a specific invocation (see ``app.rag.tracing``).
     """
 
     settings = get_settings()
@@ -388,7 +352,6 @@ def answer_query(
             client=client,
             k=k,
             settings=settings,
-            config=config,
         )
 
     plan = _prepare_generation(
