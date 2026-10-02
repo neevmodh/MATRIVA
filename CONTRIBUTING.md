@@ -5,12 +5,12 @@ Thank you for helping. This is a health product, so the bar is: **say what you c
 ## Set up
 
 ```bash
-git clone https://github.com/BhavyaSoneji/MATRIVA && cd MATRIVA
+git clone https://github.com/neevmodh/MATRIVA && cd MATRIVA
 cd backend && python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
 cp ../.env.example .env              # set JWT_SECRET to 32+ random characters
 alembic upgrade head
-pytest -q                            # 534 tests should pass
+pytest -q                            # 540 tests should pass
 cd ../frontend && npm install && npm run dev
 ```
 

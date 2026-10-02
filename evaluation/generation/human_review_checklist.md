@@ -7,6 +7,7 @@ well or genuinely helps the person asking.
 
 Use this checklist when reviewing a batch of generated responses (e.g. from
 `evaluation/reports/generation_eval_report.json`, or a fresh sample pulled from real usage).
+Generate a fresh report using the [report commands](../reports/README.md); report JSON files are not checked in.
 
 ## Per-response checklist
 

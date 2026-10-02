@@ -9,8 +9,8 @@
 /database/                   @BhavyaSoneji
 /docker-compose.yml          @BhavyaSoneji
 
-# Frontend
-/frontend/                   @Rajodedra
+# Frontend: the repository owner handles reviews until a frontend reviewer has write access.
+/frontend/                   @neevmodh
 
 # RAG / AI / safety / evidence / evaluation / testing / overall review (overrides /backend/ above
 # for these specific subpaths, because they're listed last)
