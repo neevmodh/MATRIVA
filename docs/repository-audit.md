@@ -31,7 +31,7 @@ The canonical book PDF, OCR text, book index, curated datasets, migrations, test
 
 ## Follow-up findings
 
-- Resolved: `main` requires pull requests and all six CI jobs, including the production smoke check. Admin enforcement, conversation resolution and force-push/deletion prevention are enabled.
+- Resolved: `main` requires pull requests and all seven CI jobs, including Python 3.14 and the production smoke check. Admin enforcement, conversation resolution and force-push/deletion prevention are enabled.
 - Resolved: frontend public images are included in the runtime image and checked against the built container. Redis authentication/readiness, writable reports, OCR availability and provider pin consistency are covered by the production smoke runner.
 - Resolved for the existing benchmark: the legacy offline hallucination harness now scores 11/11 after adding query coverage to its grounding gate, and CI asserts all cases abstain before generation. Vector grounding uses unboosted cosine scores. Lexical heuristics and a small benchmark still do not prove clinical answer quality; independent datasets and human review remain necessary.
 

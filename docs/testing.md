@@ -18,6 +18,8 @@ From the repository root, `python scripts/check_docs.py` checks relative Markdow
 
 The backend tests use a SQLite file that is dropped and recreated for every test, with real FastAPI requests through `TestClient`. Provider keys are blanked in `conftest.py`, so no test can reach Groq, Gemini or the web.
 
+CI runs the full backend suite separately on Python 3.11 and 3.14. Production containers use Python 3.11. SQLAlchemy and Psycopg pins are shared with ingestion so both local environments install compatible database packages.
+
 | Area | Files |
 |---|---|
 | Auth, profile, privacy | `test_auth_profile.py`, `test_admin_privacy.py` |

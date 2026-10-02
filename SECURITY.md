@@ -34,7 +34,7 @@ Out of scope: findings that need a modified client with a stolen token, volumetr
 | Safety | Rule-based and independent of any model; fails closed |
 | Logs | Request metadata and hashes, not questions, answers, tokens or health fields |
 | Supply chain | `pip-audit`, `pip check`, `npm audit` and a secret scan (`backend/scripts/secret_scan.py`) in CI |
-| Main branch | Pull requests and six passing CI jobs required, including production Docker/browser smoke. Applied to admins; force pushes/deletion blocked; conversations must be resolved |
+| Main branch | Pull requests and seven passing CI jobs required, including Python 3.14 and production Docker/browser smoke. Applied to admins; force pushes/deletion blocked; conversations must be resolved |
 
 ## Known gaps
 
