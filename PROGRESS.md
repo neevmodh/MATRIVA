@@ -19,6 +19,12 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-02 — @neevmodh — CI triggers for fix branches and manual runs
+
+- Added CI push coverage for `fix/**` branches and a `workflow_dispatch` trigger for manual validation.
+- Confirmed workflow files exist on `main` and Actions is enabled, while GitHub currently reports no registered workflows or runs.
+- Status: in-progress, checking workflow registration after pushing the trigger change.
+
 ### 2026-10-02 — @neevmodh — Deterministic pregnancy dating fallback test
 
 - Aligned the saved pregnancy profile timestamp with the care tests' fixed date, so the missing-date fallback test no longer fails when the real calendar advances.
