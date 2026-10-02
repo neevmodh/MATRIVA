@@ -345,7 +345,7 @@ CI runs the backend (ruff, secret scan, mypy, pytest), ingestion, evaluation and
 cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
-cp ../.env.example .env            # then set JWT_SECRET to 32+ random characters
+cp .env.example .env               # local SQLite config; set a unique JWT_SECRET
 alembic upgrade head               # creates the schema (SQLite by default)
 uvicorn app.main:app --reload --port 8010     # interactive docs at http://localhost:8010/docs
 ```

@@ -1,5 +1,7 @@
 # Configuration
 
+Use `backend/.env.example` for a local SQLite API without Docker or provider keys. The root `.env.example` targets Docker Compose and uses container service names such as `db` and `redis`. Copy the example for your setup to its matching `.env` and set a unique JWT secret.
+
 Every setting is an environment variable. The backend reads them (case-insensitive) from the process environment, then from `../.env` and `.env`. Copy [`.env.example`](../.env.example) to `backend/.env` to start. The defaults are meant to make the local demo run; production start-up **refuses the development JWT secret**.
 
 ## Backend

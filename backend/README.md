@@ -7,7 +7,7 @@ FastAPI, SQLAlchemy and Alembic. The rest of the project is described in the [ro
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt -r requirements-dev.txt
-cp ../.env.example .env            # set JWT_SECRET to 32+ random characters
+cp .env.example .env               # local SQLite config; set a unique JWT_SECRET
 alembic upgrade head
 uvicorn app.main:app --reload --port 8010     # http://localhost:8010/docs
 ```
