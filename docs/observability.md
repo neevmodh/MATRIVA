@@ -85,6 +85,87 @@ Or set `langsmith_tracing` / `langsmith_api_key` in `app/core/config.py`.
 Then start the app or run the trace script and open
 [smith.langchain.com](https://smith.langchain.com).
 
+### Setup, step by step
+
+1. **Get a key.** Sign up at [smith.langchain.com](https://smith.langchain.com), then
+   Settings -> API Keys -> Create API Key. Copy it (`ls__...`). The free tier is enough.
+
+2. **Merge PR #6** (`feat/rag-pipeline-trace`). The named stages below come from that
+   branch. Without it tracing still works, but every node is called
+   `RunnableSequence` / `RunnableLambda` and you lose the stage names.
+
+3. **Edit `backend/.env`** (gitignored; copy `.env.example` if missing):
+
+   ```bash
+   LANGSMITH_TRACING=true        # or LANGSMITH_TRACING_V2=true; both work
+   LANGSMITH_API_KEY=ls__your_key_here
+   LANGSMITH_PROJECT=matriva
+   LANGSMITH_ANONYMIZE=false     # only because this is a synthetic-data demo
+   ```
+
+   To get a trace that reads like the reference screenshot - the real question in the
+   Input box, the real answer in Output - set `LANGSMITH_ANONYMIZE=false`. Leave it
+   `true` and you get the run tree but not the verbatim text. **Keep it `true` for
+   anything resembling real data.**
+
+4. **Restart the app.** Tracing is reconciled in the FastAPI startup hook, so a bare
+   `LANGCHAIN_TRACING_V2=true` cannot bypass `LANGSMITH_ANONYMIZE`.
+
+   ```bash
+   docker compose up --build -d backend
+   ```
+
+   Look for this line in `docker compose logs backend`:
+
+   ```
+   LangSmith tracing is ON (project=matriva, anonymised=False)
+   ```
+
+   If you do **not** see it, tracing is off. That warning is the confirmation.
+
+5. **Send a request.**
+
+   ```bash
+   curl -X POST http://localhost:8000/auth/login \
+     -H 'Content-Type: application/json' \
+     -d '{"email":"demo.a@example.com","password":"DemoPass123!"}'
+
+   curl -X POST http://localhost:8000/chat \
+     -H 'Content-Type: application/json' \
+     -H "Authorization: Bearer <token>" \
+     -d '{"message":"What should I eat in the first trimester?"}'
+   ```
+
+   No key and no server needed for a quick look:
+
+   ```bash
+   cd backend
+   python -m scripts.rag_trace "What should I eat in the first trimester?"
+   ```
+
+6. **Open the UI.** [smith.langchain.com](https://smith.langchain.com) ->
+   **Projects** -> `matriva` -> latest run.
+
+### Reading the run tree
+
+```
+matriva.rag.query                      <- the whole request
+├─ 1.safety+retrieval+grounding        <- safety class, retrieval, grounding gate
+├─ 2.context_packet                    <- what gets sent to the model
+├─ 3.generate
+│   └─ prompt.context_packet           <- the grounded system prompt
+│       ChatGroq                       <- the model call: tokens + latency
+└─ 4.citations+post_check              <- citations validated, output guard passed
+```
+
+Click any node to see its Input and Output. Use **Collapse** in the toolbar to hide the
+`RunnableParallel` / `RunnableAssign` plumbing and leave just the four stages. Each node
+carries its own duration, so a slow `1.safety+retrieval+grounding` tells you retrieval
+is the bottleneck rather than the model.
+
+The seeded demo account uses synthetic data (`demo.a@example.com` /
+`DemoPass123!`), so anything traced that way is safe to share in a demo.
+
 Stages are named explicitly, so the tree reads:
 
 ```
