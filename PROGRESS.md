@@ -19,6 +19,13 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-02 — @neevmodh — Deterministic pregnancy dating fallback test
+
+- Aligned the saved pregnancy profile timestamp with the care tests' fixed date, so the missing-date fallback test no longer fails when the real calendar advances.
+- Added a check that the fallback advances from week 12 to week 13 after seven days.
+- Validation: 540 backend tests, 43 ingestion tests, 36 evaluation tests and 12 browser tests pass; Ruff, fresh mypy, the secret scan, frontend lint and frontend type checks pass. Frontend built with Webpack after the local environment blocked Turbopack's worker from binding a port.
+- Status: done, pending pull request review.
+
 ### 2026-10-02 — @BhavyaSoneji — LangChain end-to-end AI orchestration
 
 - Composed the external query-to-response path as LangChain runnables: safety pre-check and grounding preparation, `RunnableBranch` short-circuiting, `ChatGroq` generation, citation validation, segmentation checks and fail-closed post-check. Streaming uses the same preparation/finalization contract with LangChain model streaming.
