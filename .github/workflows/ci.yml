@@ -35,6 +35,21 @@ jobs:
       - run: pytest
         if: always()
 
+  backend-python314:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.14"
+      - run: pip install -r requirements-dev.txt
+      - run: pip check
+      - run: pip-audit
+      - run: pytest
+
   ingestion:
     runs-on: ubuntu-24.04
     defaults:

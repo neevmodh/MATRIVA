@@ -19,6 +19,12 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-02 — @neevmodh — Verify Python 3.14 setup and database compatibility
+
+- A clean Python 3.14 install failed because Psycopg 3.2.4 has no compatible binary wheel. Updated Psycopg to 3.3.6 and SQLAlchemy to 2.0.54 in backend/ingestion, with explicit DELETE-result typing from @BhavyaSoneji's PR #4.
+- Added a Python 3.14 backend CI job and documented tested Python/Node versions. The remaining context-rendering URL test now checks a complete source line instead of a domain substring.
+- PR #3 is merged; its main CI passed and Dependabot reports zero open alerts. Follow-up validation: 566 backend tests on each Python version, 43 ingestion and 36 evaluation tests on Python 3.14, static checks, both dependency audits and the production Docker/browser smoke pass. GitHub integration is pending; main protection also requires the Python 3.14 job.
+
 ### 2026-10-02 — @neevmodh — Production reliability and grounding fixes
 
 - Fixed frontend public assets/network binding, Redis authenticated readiness, writable persistent reports, OCR installation, trusted-proxy defaults and conflicting optional Groq pins. Added an isolated production Docker/browser runner with fresh PostgreSQL and Redis.

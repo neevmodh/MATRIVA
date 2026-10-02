@@ -337,7 +337,7 @@ CI runs the backend (ruff, secret scan, mypy, pytest), ingestion, evaluation and
 
 ## 🚀 Run it
 
-**You need:** Python 3.11+ and Node 20+. Docker is optional. No API key is needed: the default engine runs offline.
+**You need:** Python 3.11 or 3.14 and Node 24. Docker is optional. No API key is needed: the default engine runs offline. CI tests both Python versions; production containers use 3.11.
 
 **1. Backend**
 
