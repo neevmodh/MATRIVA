@@ -92,7 +92,7 @@ Saat required GitHub CI jobs hain; CodeQL separately run hota hai. Passing tests
 ## 📚 Aur explore karein
 
 - [Complete English README](../../README.md).
-- [6 diagrams aur 13 real application screens](../../Material/README.md), synthetic personal records ke saath.
+- [7 diagrams aur 13 real application screens](../../Material/README.md), synthetic personal records ke saath.
 - [Architecture](../architecture.md), [API](../api.md) aur [configuration](../configuration.md).
 - [Data sources](../data-sources.md), [safety](../safety.md) aur [roadmap](../roadmap.md).
 - [Contributing](../../CONTRIBUTING.md) aur [security reporting](../../SECURITY.md).
