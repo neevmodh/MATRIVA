@@ -16,7 +16,7 @@ Two switches in the backend entrypoint:
 | `RUN_MIGRATIONS` | `true` | Run `alembic upgrade head` at start. Set `false` on all but one replica, or run migrations as a release step |
 | `FORWARDED_ALLOW_IPS` | `127.0.0.1` | Which proxies Uvicorn trusts for `X-Forwarded-*`. **Set it to your proxy's address in production**; forwarded client addresses affect rate limits |
 
-`docker-compose.prod.yml` differs from the development file: it sets `ENVIRONMENT=production`, `DEBUG=false`, `DEMO_MODE=false` and `AUTO_CREATE_TABLES=false`, **refuses to start unless** `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `REDIS_PASSWORD`, `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `CORS_ORIGINS` and `NEXT_PUBLIC_API_URL` are set, only exposes the backend inside the network (put TLS and a reverse proxy in front), and installs the optional provider packages by default (`INSTALL_OPTIONAL=true`).
+`docker-compose.prod.yml` differs from the development file: it sets `ENVIRONMENT=production`, `DEBUG=false`, `DEMO_MODE=false` and `AUTO_CREATE_TABLES=false`, **refuses to start unless** `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `REDIS_PASSWORD`, `DATABASE_URL`, `REDIS_URL`, `JWT_SECRET`, `CORS_ORIGINS` and `NEXT_PUBLIC_API_URL` are set, keeps service ports internal (configure public HTTPS ingress separately), and installs the optional provider packages by default (`INSTALL_OPTIONAL=true`). The host-port values above describe the development Compose file. See the [production topology](../Material/diagrams/deployment.svg).
 
 ## Local Docker stack
 

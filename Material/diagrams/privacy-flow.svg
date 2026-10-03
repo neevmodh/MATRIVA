@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1220" viewBox="0 0 1480 1220" role="img" aria-labelledby="title desc">
+<title id="title">Consent, export and deletion are distinct</title><desc id="desc">Account authentication is separate from permission to store a health profile.. Profile deletion / consent withdrawal retains chat history. Account deletion removes the account and associated personal records.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6C8066"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#263A2A}.serif{font-family:Georgia,serif}.caption{fill:#5D7059}.tag{font-size:11px;font-weight:700;letter-spacing:1.6px}</style>
+<rect width="1480" height="1220" fill="#F5F3EB"/>
+<rect x="0" y="0" width="1480" height="8" fill="#506C48"/>
+<text x="60" y="48" class="tag">MATRIVA / TECHNICAL ATLAS</text>
+<text x="60" y="108" class="serif" font-size="43">Consent, export and deletion are distinct</text>
+<text x="60" y="143" font-size="18" class="caption">Account authentication is separate from permission to store a health profile.</text>
+<polyline points="740.0,360 740.0,430" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="540,490.0 450,507.5" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="478.6" y="484.75" width="32.8" height="25" rx="4" fill="#F5F3EB"/>
+<text x="495.0" y="501.75" text-anchor="middle" font-size="13" font-weight="600">no</text>
+<polyline points="940,490.0 1030,507.5" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="964.9" y="484.75" width="40.2" height="25" rx="4" fill="#F5F3EB"/>
+<text x="985.0" y="501.75" text-anchor="middle" font-size="13" font-weight="600">yes</text>
+<polyline points="540,285.0 490,285 490,695 270,695 270.0,770" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="540,285.0 490,285 490,695 740,695 740.0,770" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="940,285.0 990,285 990,695 1220,695 1220.0,770" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="540" y="210" width="400" height="150" rx="10" fill="#263A2A" stroke="#263A2A" stroke-width="1.5"/>
+<text x="562" y="235" class="tag" style="fill:#F5F3EB">IDENTITY</text>
+<text x="562" y="265" font-size="23" font-weight="700" style="fill:#F5F3EB">Signed-in account</text>
+<text x="562" y="292" font-size="17" style="fill:#F5F3EB">JWT resolves the account owner</text>
+<text x="562" y="314" font-size="17" style="fill:#F5F3EB">Each endpoint authorizes ownership</text>
+<polygon points="740.0,430 940,490.0 740.0,550 540,490.0" fill="#F6ECD2" stroke="#B0985E" stroke-width="1.5"/>
+<text x="740.0" y="485.0" text-anchor="middle" font-size="22" font-weight="700">Health-storage consent?</text>
+<text x="740.0" y="512.0" text-anchor="middle" font-size="15">Required for health / care writes</text>
+<rect x="70" y="430" width="380" height="155" rx="10" fill="#F7E3E1" stroke="#BD8583" stroke-width="1.5"/>
+<text x="92" y="455" class="tag">NO CONSENT</text>
+<text x="92" y="485" font-size="23" font-weight="700">Declined / withdrawn</text>
+<text x="92" y="512" font-size="17">No health profile storage</text>
+<text x="92" y="534" font-size="17">Withdrawal purges profile + care</text>
+<rect x="1030" y="430" width="380" height="155" rx="10" fill="#E5F0EF" stroke="#739895" stroke-width="1.5"/>
+<text x="1052" y="455" class="tag">CONSENTED WRITES</text>
+<text x="1052" y="485" font-size="23" font-weight="700">Store profile + care</text>
+<text x="1052" y="512" font-size="17">Pregnancy, safety profile, readings</text>
+<text x="1052" y="534" font-size="17">Meals, check-ins and care records</text>
+<rect x="70" y="770" width="400" height="175" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="92" y="795" class="tag">CONTROL A / JSON DOWNLOAD</text>
+<text x="92" y="825" font-size="23" font-weight="700">Export my data</text>
+<text x="92" y="852" font-size="17">GET /privacy/export</text>
+<text x="92" y="874" font-size="17">Account, profile, care and messages</text>
+<rect x="540" y="770" width="400" height="175" rx="10" fill="#F6ECD2" stroke="#B0985E" stroke-width="1.5"/>
+<text x="562" y="795" class="tag">CONTROL B / LIMITED SCOPE</text>
+<text x="562" y="825" font-size="23" font-weight="700">Delete the health profile</text>
+<text x="562" y="852" font-size="17">DELETE /profile or withdraw consent</text>
+<text x="562" y="874" font-size="17">Profile + care erased; chats remain</text>
+<rect x="1030" y="770" width="380" height="190" rx="10" fill="#F7E3E1" stroke="#BD8583" stroke-width="1.5"/>
+<text x="1052" y="795" class="tag">CONTROL C / ACCOUNT SCOPE</text>
+<text x="1052" y="825" font-size="23" font-weight="700">Delete my account</text>
+<text x="1052" y="852" font-size="17">DELETE /privacy/account</text>
+<text x="1052" y="874" font-size="17">Associated personal records removed</text>
+<text x="1052" y="896" font-size="17">Old token no longer resolves a user</text>
+<line x1="60" x2="1420" y1="1126" y2="1126" stroke="#CCD4C6"/>
+<text x="60" y="1156" font-size="16" class="caption">Profile deletion / consent withdrawal retains chat history. Account deletion removes the account and associated personal records.</text>
+<text x="60" y="1186" font-size="13" class="caption">Code reference: api/privacy.py · api/profile.py · services/profile.py · services/care/privacy.py · models/entities.py</text>
+<text x="1420" y="1186" text-anchor="end" class="tag">PRIVACY-FLOW</text></svg>

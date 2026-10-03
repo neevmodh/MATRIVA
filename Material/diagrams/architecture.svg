@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1120" viewBox="0 0 1480 1120" role="img" aria-labelledby="title desc">
+<title id="title">A modular monolith, with clear boundaries</title><desc id="desc">One browser workspace. One API. Safety and care decisions stay on the server.. Solid arrows: application data flow. Dashed arrows: optional external adapters. Development uses SQLite; production uses PostgreSQL.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6C8066"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#263A2A}.serif{font-family:Georgia,serif}.caption{fill:#5D7059}.tag{font-size:11px;font-weight:700;letter-spacing:1.6px}</style>
+<rect width="1480" height="1120" fill="#F5F3EB"/>
+<rect x="0" y="0" width="1480" height="8" fill="#506C48"/>
+<text x="60" y="48" class="tag">MATRIVA / TECHNICAL ATLAS</text>
+<text x="60" y="108" class="serif" font-size="43">A modular monolith, with clear boundaries</text>
+<text x="60" y="143" font-size="18" class="caption">One browser workspace. One API. Safety and care decisions stay on the server.</text>
+<rect x="50" y="420" width="1360" height="275" rx="12" fill="none" stroke="#D6DDD0" stroke-width="1.5"/>
+<text x="70" y="449" class="tag caption">BACKEND MODULES / ONE DEPLOYABLE SERVICE</text>
+<polyline points="470,285.0 530,285.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="730.0,360 730,390 270,390 270.0,480" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="730.0,360 730.0,480" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="730.0,360 730,390 1190,390 1190.0,480" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="930,562.5 960,565 960,380 1190,380 1190.0,360" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+<polyline points="270.0,645 270.0,820" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="730.0,645 730.0,820" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="658.1" y="730" width="143.8" height="25" rx="4" fill="#F5F3EB"/>
+<text x="730" y="747" text-anchor="middle" font-size="13" font-weight="600">approved evidence</text>
+<polyline points="1190.0,645 1190,730 730,730 730.0,820" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="1190.0,645 1190,780 270,780 270.0,820" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="930,285.0 950,285 950,395 1440,395 1440,897 1390,897.5" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="70" y="210" width="400" height="150" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="92" y="235" class="tag">CLIENT / TYPESCRIPT</text>
+<text x="92" y="265" font-size="23" font-weight="700">Next.js + React workspace</text>
+<text x="92" y="292" font-size="17">Chat, care cards, settings · JSON / SSE</text>
+<text x="92" y="314" font-size="17">Patient and role-gated staff views</text>
+<rect x="530" y="210" width="400" height="150" rx="10" fill="#263A2A" stroke="#263A2A" stroke-width="1.5"/>
+<text x="552" y="235" class="tag" style="fill:#F5F3EB">API / PYTHON</text>
+<text x="552" y="265" font-size="23" font-weight="700" style="fill:#F5F3EB">FastAPI request boundary</text>
+<text x="552" y="292" font-size="17" style="fill:#F5F3EB">Validation, JWT / roles, CORS</text>
+<text x="552" y="314" font-size="17" style="fill:#F5F3EB">Quotas, request IDs, metrics</text>
+<rect x="990" y="210" width="400" height="150" rx="10" fill="#F6ECD2" stroke="#B0985E" stroke-width="1.5"/>
+<text x="1012" y="235" class="tag">EXTERNAL MODE ONLY</text>
+<text x="1012" y="265" font-size="23" font-weight="700">Optional provider adapters</text>
+<text x="1012" y="292" font-size="17">Groq generation · Gemini embeddings</text>
+<text x="1012" y="314" font-size="17">Tavily search if configured</text>
+<rect x="70" y="480" width="400" height="165" rx="10" fill="#F7E3E1" stroke="#BD8583" stroke-width="1.5"/>
+<text x="92" y="505" class="tag">POLICY / FAIL CLOSED</text>
+<text x="92" y="535" font-size="23" font-weight="700">Safety + guard rails</text>
+<text x="92" y="562" font-size="17">Classify input, use consented context</text>
+<text x="92" y="584" font-size="17">Validate output and citations</text>
+<rect x="530" y="480" width="400" height="165" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="552" y="505" class="tag">TWO ENGINE MODES</text>
+<text x="552" y="535" font-size="23" font-weight="700">Evidence + retrieval</text>
+<text x="552" y="562" font-size="17">Local hybrid index / extraction</text>
+<text x="552" y="584" font-size="17">External LangChain pipeline</text>
+<rect x="990" y="480" width="400" height="165" rx="10" fill="#E5F0EF" stroke="#739895" stroke-width="1.5"/>
+<text x="1012" y="505" class="tag">YAML / JSON RULES</text>
+<text x="1012" y="535" font-size="23" font-weight="700">Deterministic care services</text>
+<text x="1012" y="562" font-size="17">Dating, plans, readings, meals</text>
+<text x="1012" y="584" font-size="17">Check-ins, screening, summary</text>
+<rect x="70" y="820" width="400" height="155" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="92" y="845" class="tag">FILES / SOURCE CONTROL</text>
+<text x="92" y="875" font-size="23" font-weight="700">Versioned reference files</text>
+<text x="92" y="902" font-size="17">Rules, nutrient data, book structure</text>
+<text x="92" y="924" font-size="17">Reviewed independently of software</text>
+<rect x="530" y="820" width="400" height="155" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="552" y="845" class="tag">SQLITE / POSTGRESQL + PGVECTOR</text>
+<text x="552" y="875" font-size="23" font-weight="700">SQLAlchemy data layer</text>
+<text x="552" y="902" font-size="17">Accounts, consent, care, messages</text>
+<text x="552" y="924" font-size="17">Approved documents and chunks</text>
+<rect x="990" y="820" width="400" height="155" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="1012" y="845" class="tag">REQUIRED IN PRODUCTION</text>
+<text x="1012" y="875" font-size="23" font-weight="700">Redis shared quotas</text>
+<text x="1012" y="902" font-size="17">Atomic counters across workers</text>
+<text x="1012" y="924" font-size="17">Production fails closed on outage</text>
+<line x1="60" x2="1420" y1="1026" y2="1026" stroke="#CCD4C6"/>
+<text x="60" y="1056" font-size="16" class="caption">Solid arrows: application data flow. Dashed arrows: optional external adapters. Development uses SQLite; production uses PostgreSQL.</text>
+<text x="60" y="1086" font-size="13" class="caption">Code reference: frontend/app · backend/app/main.py · services/chat.py · rag/local/ · docker-compose.prod.yml</text>
+<text x="1420" y="1086" text-anchor="end" class="tag">ARCHITECTURE</text></svg>

@@ -17,6 +17,7 @@ Everything about MATRIVA, in one place. If you are new, read the [project README
 
 | Page | What it covers |
 |---|---|
+| [Material visual atlas](../Material/README.md) | Six diagrams, 13 real application captures and reproduction tools |
 | [`architecture.md`](./architecture.md) | Modules, request flow, data model, trust boundaries |
 | [`api.md`](./api.md) | Every endpoint, the chat stream format, errors |
 | [`care-features.md`](./care-features.md) | The slash commands, what each needs and returns, the safety profile |
