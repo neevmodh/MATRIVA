@@ -10,12 +10,13 @@ The colorful README graphics are available as an editable [cover SVG](./branding
 
 ## Diagram atlas
 
-Six diagrams share the application's cream, sage and forest palette. SVG preserves sharp text at any zoom, PNG is convenient for slides, and Mermaid provides an editable graph. The generator contains the layout and the same node/edge definitions for both vector and Mermaid exports.
+Seven diagrams explain the implemented application. SVG preserves sharp text at any zoom, PNG is convenient for slides, and Mermaid provides an editable graph. The six core atlas diagrams use a shared generator; the standalone RAG pipeline is editable directly as SVG or Mermaid and uses the same PNG export tool.
 
 | Diagram | What it explains | Exports |
 |---|---|---|
 | System architecture | Browser/API boundaries, server modules, persistence and optional providers | [SVG](./diagrams/architecture.svg) · [PNG](./diagrams/architecture.png) · [Mermaid](./diagrams/architecture.mmd) |
 | Chat working flow | Input safety, evidence gate, two retrieval engines, composition and final streaming validation | [SVG](./diagrams/working-flow.svg) · [PNG](./diagrams/working-flow.png) · [Mermaid](./diagrams/working-flow.mmd) |
+| RAG pipeline | Reviewed knowledge, seven retrieval signals, ranking, sufficiency, extractive answers and the optional external engine | [SVG](./diagrams/rag-pipeline.svg) · [PNG](./diagrams/rag-pipeline.png) · [Mermaid](./diagrams/rag-pipeline.mmd) |
 | User flow | Account creation, consent, chat, care tools and privacy controls | [SVG](./diagrams/user-flow.svg) · [PNG](./diagrams/user-flow.png) · [Mermaid](./diagrams/user-flow.mmd) |
 | Source-review workflow | Upload, extraction, indexing, human review and retrieval eligibility | [SVG](./diagrams/source-review.svg) · [PNG](./diagrams/source-review.png) · [Mermaid](./diagrams/source-review.mmd) |
 | Production deployment | Four Compose services, private networking, volumes and operator-managed ingress | [SVG](./diagrams/deployment.svg) · [PNG](./diagrams/deployment.png) · [Mermaid](./diagrams/deployment.mmd) |
@@ -32,6 +33,12 @@ Grounded in [API startup](../backend/app/main.py), [chat orchestration](../backe
 ![Flowchart of question processing, safety exits, retrieval, evidence checks and delivery](./diagrams/working-flow.svg)
 
 Grounded in [chat orchestration](../backend/app/services/chat.py), the [external pipeline](../backend/app/rag/pipeline.py), the [offline engine](../backend/app/rag/local/engine.py) and [output checks](../backend/app/safety/guardrails/output.py). Safety exits and insufficient-evidence replies are fixed paths. The validated final SSE event may correct earlier deltas.
+
+### RAG pipeline
+
+![MATRIVA RAG pipeline from source review through hybrid retrieval to cited answers, with safety and insufficient-evidence exits](./diagrams/rag-pipeline.svg)
+
+Grounded in [chat orchestration](../backend/app/services/chat.py), [corpus eligibility](../backend/app/rag/local/corpus.py), [local retrieval](../backend/app/rag/local/retriever.py), [extractive composition](../backend/app/rag/local/composer.py) and the [external pipeline](../backend/app/rag/pipeline.py). The default path is offline and extractive. The inset describes the optional Gemini/pgvector and LangChain/Groq path. Read the [RAG overview](../docs/rag.md) and [local engine details](../docs/local-rag.md).
 
 ### User flow
 

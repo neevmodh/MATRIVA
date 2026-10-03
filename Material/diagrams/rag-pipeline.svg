@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2280" height="1560" viewBox="0 0 2280 1560" role="img" aria-labelledby="title description">
+<title id="title">MATRIVA — retrieval augmented generation pipeline</title>
+<desc id="description">A standalone diagram of MATRIVA's default offline RAG pipeline. Documents are parsed, chunked, reviewed and indexed. A safe question is prepared, retrieved with seven signals, fused, reranked and diversified. Sufficient evidence is composed into an extractive cited answer, checked and returned. Urgent requests and insufficient evidence take fixed response branches. An inset describes the optional external Gemini and Groq engine.</desc>
+<defs>
+  <linearGradient id="header" x2="1" y2="0"><stop stop-color="#123D35"/><stop offset=".57" stop-color="#173F50"/><stop offset="1" stop-color="#423953"/></linearGradient>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#3A7769"/></marker>
+  <marker id="red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#BF5D62"/></marker>
+  <marker id="amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#A27A29"/></marker>
+  <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#203C37" flood-opacity=".055"/></filter>
+</defs>
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#193C36}
+.section{font-size:19px;font-weight:700;letter-spacing:2.4px;fill:#58766E}
+.tag{font-size:15px;font-weight:700;letter-spacing:1.5px}
+.title{font-size:28px;font-weight:700}
+.body{font-size:21px;fill:#4C665E}
+.edge-label{font-size:17px;font-weight:600;fill:#57726B}
+</style>
+<rect width="2280" height="1560" fill="#FAFBF7"/>
+<rect width="2280" height="180" fill="url(#header)"/>
+<rect y="176" width="2280" height="4" fill="#A3D8BE"/>
+<text x="70" y="48" style="fill:#A5D8C5;font-size:17px;font-weight:700;letter-spacing:3px">MATRIVA / SYSTEM FLOW</text>
+<text x="70" y="111" style="fill:#FFF8E6;font-size:51px;font-weight:700">RAG pipeline</text>
+<text x="70" y="151" style="fill:#D5E8E2;font-size:23px">Reviewed knowledge → relevant passages → cited answers</text>
+<rect x="1690" y="46" width="520" height="47" rx="23" fill="#FFFFFF" fill-opacity=".1" stroke="#A4C9BD" stroke-opacity=".45"/>
+<text x="1950" y="77" text-anchor="middle" style="fill:#CEEDD9;font-size:21px;font-weight:700">RAG_ENGINE=local · default</text>
+<text x="2210" y="131" text-anchor="end" style="fill:#DEDDEB;font-size:20px">Offline · extractive · no AI API key</text>
+<text x="70" y="236" class="section">01 / PREPARE THE KNOWLEDGE</text>
+<text x="70" y="556" class="section">02 / TURN A SAFE QUESTION INTO EVIDENCE</text>
+<text x="70" y="972" class="section">03 / CHECK, COMPOSE AND DELIVER</text>
+<path d="M 70 495 H 2210" stroke="#DDE5DA" stroke-width="1.5"/>
+
+<g id="sources" data-card="true" data-x="70" data-y="270" data-w="490" data-h="180">
+<rect x="70" y="270" width="490" height="180" rx="17" fill="#EAF3F8" stroke="#B7CEDD" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="94" y="293" width="5" height="19" rx="2" fill="#447998"/>
+<text x="111" y="308" class="tag" style="fill:#447998">KNOWLEDGE INPUT</text>
+<text x="97" y="350" class="title" style="font-size:28px">Source documents</text>
+<text x="97" y="379" class="body">Guidelines and nutrient tables</text>
+<text x="97" y="403" class="body">Book scans / OCR content</text>
+<text x="97" y="427" class="body">Source, domain and evidence labels</text>
+</g>
+<g id="ingest" data-card="true" data-x="620" data-y="270" data-w="490" data-h="180">
+<rect x="620" y="270" width="490" height="180" rx="17" fill="#EAF3F8" stroke="#B7CEDD" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="644" y="293" width="5" height="19" rx="2" fill="#447998"/>
+<text x="661" y="308" class="tag" style="fill:#447998">INGESTION</text>
+<text x="647" y="350" class="title" style="font-size:28px">Parse, clean and chunk</text>
+<text x="647" y="379" class="body">Extract text; preserve provenance</text>
+<text x="647" y="403" class="body">Split into searchable passages</text>
+<text x="647" y="427" class="body">Attach locator and quality metadata</text>
+</g>
+<g id="review" data-card="true" data-x="1170" data-y="270" data-w="490" data-h="180">
+<rect x="1170" y="270" width="490" height="180" rx="17" fill="#F1EDF8" stroke="#CEC0DE" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="1194" y="293" width="5" height="19" rx="2" fill="#826399"/>
+<text x="1211" y="308" class="tag" style="fill:#826399">EVIDENCE CONTROL</text>
+<text x="1197" y="350" class="title" style="font-size:28px">Human review gate</text>
+<text x="1197" y="379" class="body">Approve the source and document</text>
+<text x="1197" y="403" class="body">Keep only active, eligible content</text>
+<text x="1197" y="427" class="body">Unapproved evidence is excluded</text>
+</g>
+<g id="index" data-card="true" data-x="1720" data-y="270" data-w="490" data-h="180">
+<rect x="1720" y="270" width="490" height="180" rx="17" fill="#E6F2EC" stroke="#AFD0BF" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="1744" y="293" width="5" height="19" rx="2" fill="#397A61"/>
+<text x="1761" y="308" class="tag" style="fill:#397A61">APPROVED CORPUS</text>
+<text x="1747" y="350" class="title" style="font-size:28px">Build local indexes</text>
+<text x="1747" y="379" class="body">Lexical + semantic representations</text>
+<text x="1747" y="403" class="body">Structure index + concept graph</text>
+<text x="1747" y="427" class="body">Refresh when reviewed data changes</text>
+</g>
+<path d="M 560 360 H 613" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1110 360 H 1163" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1660 360 H 1713" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<g id="question" data-card="true" data-x="70" data-y="595" data-w="490" data-h="205">
+<rect x="70" y="595" width="490" height="205" rx="17" fill="#EBF3E8" stroke="#B6CDB1" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="94" y="618" width="5" height="19" rx="2" fill="#507548"/>
+<text x="111" y="633" class="tag" style="fill:#507548">INPUT</text>
+<text x="97" y="675" class="title" style="font-size:28px">User question</text>
+<text x="97" y="710" class="body">English · Hindi · Gujarati · Hinglish</text>
+<text x="97" y="739" class="body">Authenticated chat request</text>
+<text x="97" y="768" class="body">POST /chat or /chat/stream</text>
+</g>
+<g id="safety" data-card="true" data-x="620" data-y="595" data-w="490" data-h="205">
+<rect x="620" y="595" width="490" height="205" rx="17" fill="#FBEDEF" stroke="#DDB5BC" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="644" y="618" width="5" height="19" rx="2" fill="#A95162"/>
+<text x="661" y="633" class="tag" style="fill:#A95162">BEFORE RETRIEVAL</text>
+<text x="647" y="675" class="title" style="font-size:28px">Safety pre-check</text>
+<text x="647" y="710" class="body">Classify intent and risk first</text>
+<text x="647" y="739" class="body">Apply consented personal guard rails</text>
+<text x="647" y="768" class="body">Classifier failure → fail closed (503)</text>
+</g>
+<g id="prepare" data-card="true" data-x="1170" data-y="595" data-w="490" data-h="205">
+<rect x="1170" y="595" width="490" height="205" rx="17" fill="#EBF3E8" stroke="#B6CDB1" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="1194" y="618" width="5" height="19" rx="2" fill="#507548"/>
+<text x="1211" y="633" class="tag" style="fill:#507548">SAFE TURN</text>
+<text x="1197" y="675" class="title" style="font-size:28px">Prepare the query</text>
+<text x="1197" y="710" class="body">Resolve follow-ups and intent</text>
+<text x="1197" y="739" class="body">HI / GU / Hinglish → English search</text>
+<text x="1197" y="768" class="body">Use consented profile context</text>
+</g>
+<g id="retrieve" data-card="true" data-x="1720" data-y="595" data-w="490" data-h="205">
+<rect x="1720" y="595" width="490" height="205" rx="17" fill="#E6F2EC" stroke="#AFD0BF" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="1744" y="618" width="5" height="19" rx="2" fill="#397A61"/>
+<text x="1761" y="633" class="tag" style="fill:#397A61">SEVEN RETRIEVAL SIGNALS</text>
+<text x="1747" y="675" class="title" style="font-size:28px">Hybrid retrieval</text>
+<text x="1747" y="710" class="body">BM25 · character n-grams · concepts</text>
+<text x="1747" y="739" class="body">LSA semantics · chapter/section titles</text>
+<text x="1747" y="768" class="body">Graph PageRank · feedback (PRF)</text>
+</g>
+<path d="M 560 697 H 613" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1110 697 H 1163" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1660 697 H 1713" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1965 450 V 588" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1992" y="524" class="edge-label" style="fill:#3A7769">approved evidence</text>
+<path d="M 865 800 V 858" stroke="#BF5D62" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#red)"/>
+<text x="890" y="834" class="edge-label" style="fill:#A95162">urgent / high risk</text>
+<g id="safety-stop" data-card="true" data-x="620" data-y="865" data-w="490" data-h="74">
+<rect x="620" y="865" width="490" height="74" rx="17" fill="#FBEDEF" stroke="#DDB5BC" stroke-width="1.6"/>
+<text x="645" y="896" style="font-size:22px;font-weight:700;fill:#983E51">Fixed escalation / refusal response</text>
+<text x="645" y="922" style="font-size:19px;fill:#86515D">Stop here · no retrieval or model call</text></g>
+<g id="fusion" data-card="true" data-x="1720" data-y="1010" data-w="490" data-h="205">
+<rect x="1720" y="1010" width="490" height="205" rx="17" fill="#E6F2EC" stroke="#AFD0BF" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="1744" y="1033" width="5" height="19" rx="2" fill="#397A61"/>
+<text x="1761" y="1048" class="tag" style="fill:#397A61">RANKED EVIDENCE</text>
+<text x="1747" y="1090" class="title" style="font-size:27px">Fuse, rerank and diversify</text>
+<text x="1747" y="1125" class="body">Weighted reciprocal rank fusion</text>
+<text x="1747" y="1154" class="body">Coverage · quality · stage / diet fit</text>
+<text x="1747" y="1183" class="body">MMR diversity + source limits</text>
+</g>
+<g id="sufficiency" data-card="true" data-x="1170" data-y="1010" data-w="490" data-h="205">
+<rect x="1170" y="1010" width="490" height="205" rx="17" fill="#FCF3DE" stroke="#D9C38C" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="1194" y="1033" width="5" height="19" rx="2" fill="#967126"/>
+<text x="1211" y="1048" class="tag" style="fill:#967126">SUFFICIENCY GATE</text>
+<text x="1197" y="1090" class="title" style="font-size:27px">Is the evidence sufficient?</text>
+<text x="1197" y="1125" class="body">IDF-weighted coverage checks</text>
+<text x="1197" y="1154" class="body">Judge sentences and top passages</text>
+<text x="1197" y="1183" class="body">Pass → compose · fail → abstain</text>
+</g>
+<g id="compose" data-card="true" data-x="620" data-y="1010" data-w="490" data-h="205">
+<rect x="620" y="1010" width="490" height="205" rx="17" fill="#EBF3E8" stroke="#B6CDB1" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="644" y="1033" width="5" height="19" rx="2" fill="#507548"/>
+<text x="661" y="1048" class="tag" style="fill:#507548">NO LLM ON THE DEFAULT PATH</text>
+<text x="647" y="1090" class="title" style="font-size:25px">Compose an extractive answer</text>
+<text x="647" y="1125" class="body">Select real source sentences</text>
+<text x="647" y="1154" class="body">Separate modern / traditional content</text>
+<text x="647" y="1183" class="body">Number citations: [1], [2], …</text>
+</g>
+<g id="validate" data-card="true" data-x="70" data-y="1010" data-w="490" data-h="205">
+<rect x="70" y="1010" width="490" height="205" rx="17" fill="#FBEDEF" stroke="#DDB5BC" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="94" y="1033" width="5" height="19" rx="2" fill="#A95162"/>
+<text x="111" y="1048" class="tag" style="fill:#A95162">FINAL GUARD</text>
+<text x="97" y="1090" class="title" style="font-size:28px">Validate before delivery</text>
+<text x="97" y="1125" class="body">Safety post-check + citation checks</text>
+<text x="97" y="1154" class="body">Safe replacement if checks fail</text>
+<text x="97" y="1183" class="body">Persist + return JSON or final SSE</text>
+</g>
+<path d="M 1965 800 V 1003" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="1992" y="926" class="edge-label" style="fill:#3A7769">ranked candidates</text>
+<path d="M 1720 1112 H 1667" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1170 1112 H 1117" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 620 1112 H 567" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 315 1215 V 1283" stroke="#3A7769" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="341" y="1257" class="edge-label" style="fill:#3A7769">validated output</text>
+<path d="M 1415 1215 V 1283" stroke="#A27A29" stroke-width="3" fill="none" stroke-linejoin="round" marker-end="url(#amber)"/>
+<text x="1440" y="1257" class="edge-label" style="fill:#A27A29">not enough evidence</text>
+<g id="answer" data-card="true" data-x="70" data-y="1290" data-w="490" data-h="170">
+<rect x="70" y="1290" width="490" height="170" rx="17" fill="#E6F2EC" stroke="#AFD0BF" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="94" y="1313" width="5" height="19" rx="2" fill="#397A61"/>
+<text x="111" y="1328" class="tag" style="fill:#397A61">DELIVERED TO THE USER</text>
+<text x="97" y="1370" class="title" style="font-size:28px">Cited answer</text>
+<text x="97" y="1399" class="body">Answer · sources · safety status</text>
+<text x="97" y="1423" class="body">Retrieval trace · next questions</text>
+</g>
+<g id="abstain" data-card="true" data-x="1170" data-y="1290" data-w="490" data-h="170">
+<rect x="1170" y="1290" width="490" height="170" rx="17" fill="#FCF3DE" stroke="#D9C38C" stroke-width="1.6"  filter="url(#shadow)"/>
+<rect x="1194" y="1313" width="5" height="19" rx="2" fill="#967126"/>
+<text x="1211" y="1328" class="tag" style="fill:#967126">ALTERNATE OUTCOME</text>
+<text x="1197" y="1370" class="title" style="font-size:28px">Insufficient evidence</text>
+<text x="1197" y="1399" class="body">Return the fixed evidence response</text>
+<text x="1197" y="1423" class="body">Do not fill the gap with generation</text>
+</g>
+<g id="external" data-card="true" data-x="1720" data-y="1290" data-w="490" data-h="170">
+<rect x="1720" y="1290" width="490" height="170" rx="17" fill="#F1EDF8" stroke="#CEC0DE" stroke-width="1.6" stroke-dasharray="8 6" filter="url(#shadow)"/>
+<rect x="1744" y="1313" width="5" height="19" rx="2" fill="#826399"/>
+<text x="1761" y="1328" class="tag" style="fill:#826399">RAG_ENGINE=external</text>
+<text x="1747" y="1370" class="title" style="font-size:27px">Optional external engine</text>
+<text x="1747" y="1399" class="body">Gemini / pgvector → LangChain / Groq</text>
+<text x="1747" y="1423" class="body">Grounded context + shared checks</text>
+<text x="1747" y="1447" class="body">Provider failure → local fallback</text>
+</g>
+<g>
+<text x="620" y="1324" class="tag" style="fill:#59766D">HOW TO READ THIS DIAGRAM</text>
+<path d="M 623 1360 H 660" stroke="#3A7769" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="679" y="1366" style="font-size:20px;fill:#4C665E">Solid arrows: default local path</text>
+<circle cx="641" cy="1395" r="7" fill="#BF5D62"/>
+<text x="679" y="1402" style="font-size:20px;fill:#4C665E">Rose: safety intervention</text>
+<circle cx="641" cy="1431" r="7" fill="#A27A29"/>
+<text x="679" y="1438" style="font-size:20px;fill:#4C665E">Amber: evidence decision</text>
+</g>
+<path d="M 70 1493 H 2210" stroke="#DDE5DA" stroke-width="1.5"/>
+<text x="70" y="1527" style="font-size:18px;fill:#688078">Implementation: app/services/chat.py · app/rag/local/* · app/rag/pipeline.py</text>
+<text x="2210" y="1527" text-anchor="end" style="font-size:18px;fill:#688078">Personal export · 03 Oct 2026 · revision e78a191</text>
+
+</svg>

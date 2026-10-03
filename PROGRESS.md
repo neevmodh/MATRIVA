@@ -19,6 +19,11 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-03 — @neevmodh — Standalone RAG pipeline diagram
+
+- Added the requested RAG pipeline as a self-contained SVG, 4560 × 3120 PNG and editable Mermaid graph. It covers ingestion/review, seven local retrieval signals, fusion/reranking/diversity, sufficiency, extractive composition and final checks, with safety exits and an optional external-engine inset.
+- Linked the diagram from the project README and Material atlas; synchronized the seven-diagram count in the highlights and translated guides. The diagram was visually checked, and card text fits its bounds.
+
 ### 2026-10-03 — @neevmodh — Colorful multilingual README
 
 - Added a forest/teal/gold cover, four colorful project highlight cards, badges for all eight source languages, clearer feature icons and stable navigation anchors.

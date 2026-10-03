@@ -1,0 +1,46 @@
+%% Standalone RAG overview; SVG contains the presentation layout.
+flowchart TB
+    subgraph knowledge["Prepare the knowledge"]
+        direction LR
+        sources["Source documents<br/>Guidelines, nutrient tables and book scans"]
+        ingest["Parse, clean and chunk<br/>Text, provenance, locators and quality metadata"]
+        review["Human review gate<br/>Approved source + approved active document"]
+        index["Local indexes + concept graph<br/>Refresh when reviewed data changes"]
+        sources --> ingest --> review --> index
+    end
+
+    question["User question<br/>English, Hindi, Gujarati or Hinglish<br/>POST /chat or /chat/stream"]
+    safety["Safety pre-check<br/>Intent, risk and consented personal guard rails<br/>Classifier failure: fail closed with 503"]
+    fixed["Fixed escalation / refusal<br/>No retrieval or model call"]
+    prepare["Prepare the safe query<br/>Follow-ups, intent and consented profile<br/>HI / GU / Hinglish to English search"]
+    retrieve["Seven-signal hybrid retrieval<br/>BM25, character n-grams, concepts<br/>LSA, structure, graph PageRank and PRF"]
+    rank["Fuse, rerank and diversify<br/>Weighted RRF, coverage, quality and profile fit<br/>MMR + source limits"]
+    gate{"Evidence sufficient?<br/>IDF-weighted coverage checks"}
+    abstain["Fixed insufficient-evidence response<br/>No generation to fill the gap"]
+    compose["Extractive composition<br/>Real source sentences, labelled evidence<br/>Numbered citations; no LLM"]
+    validate["Safety post-check + citation checks<br/>Safe replacement on failure<br/>Persist; return JSON or validated final SSE"]
+    answer["Cited answer<br/>Sources, safety status, trace and next questions"]
+    external["Optional: RAG_ENGINE=external<br/>Gemini / pgvector retrieval to LangChain / Groq<br/>Grounded context + shared checks<br/>Provider failure: local fallback"]
+
+    question --> safety
+    safety -->|"urgent / high risk"| fixed
+    safety -->|"safe / caution"| prepare
+    prepare --> retrieve
+    index -->|"approved evidence"| retrieve
+    retrieve --> rank --> gate
+    gate -->|"yes"| compose
+    gate -->|"no"| abstain
+    compose --> validate --> answer
+
+    classDef core fill:#EBF3E8,stroke:#B6CDB1,color:#193C36
+    classDef evidence fill:#E6F2EC,stroke:#AFD0BF,color:#193C36
+    classDef input fill:#EAF3F8,stroke:#B7CEDD,color:#193C36
+    classDef caution fill:#FCF3DE,stroke:#D9C38C,color:#193C36
+    classDef safety fill:#FBEDEF,stroke:#DDB5BC,color:#193C36
+    classDef optional fill:#F1EDF8,stroke:#CEC0DE,color:#193C36,stroke-dasharray:8 6
+    class sources,ingest input
+    class question,prepare,compose core
+    class index,retrieve,rank,answer evidence
+    class gate,abstain caution
+    class safety,fixed,validate safety
+    class review,external optional

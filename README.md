@@ -146,6 +146,8 @@ The application is a **modular monolith**: one Next.js workspace talks to one Fa
 
 The streaming client applies the final event even when it replaces earlier deltas. See the [working flowchart](./Material/diagrams/working-flow.svg) and [SSE contract](./docs/api.md#streaming-chat).
 
+The [RAG pipeline diagram](./Material/diagrams/rag-pipeline.svg) follows reviewed documents through hybrid retrieval, ranking, evidence checks and cited answers. Download the [high-resolution PNG](./Material/diagrams/rag-pipeline.png) or [editable Mermaid graph](./Material/diagrams/rag-pipeline.mmd).
+
 ### 🧭 The user journey
 
 ![User flow from landing and account creation through consent to guidance, care tracking and privacy](./Material/diagrams/user-flow.svg)
