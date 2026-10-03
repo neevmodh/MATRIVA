@@ -19,6 +19,12 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-03 — @neevmodh — Colorful multilingual README
+
+- Added a forest/teal/gold cover, four colorful project highlight cards, badges for all eight source languages, clearer feature icons and stable navigation anchors.
+- Added Hindi, Gujarati and Hinglish project/setup guides linked from the English README. The language matrix distinguishes three UI options and Hinglish input from the current English retrieved-answer behavior; clinical and native-speaker review requirements remain explicit.
+- Linked the reading guides and editable branding SVGs from the documentation and Material indexes. All 379 local documentation targets and the secret scan pass; all four guides render through GitHub Markdown with valid navigation, loaded local images and no page overflow in a 430px preview.
+
 ### 2026-10-03 — @neevmodh — Verify GitHub diagram presentation
 
 - Added intrinsic SVG dimensions so the diagrams fill the README's content width while remaining responsive. GitHub's rendered README has valid navigation anchors and all local images decode; the Mermaid parser accepts all six editable graphs.

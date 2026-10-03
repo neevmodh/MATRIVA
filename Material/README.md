@@ -4,6 +4,8 @@ Architecture, request flow, user journeys and real application captures, in one 
 
 [Project README](../README.md) · [Diagram atlas](#diagram-atlas) · [Application captures](#application-captures) · [Reproduce the material](#reproduce-the-material)
 
+The colorful README graphics are available as an editable [cover SVG](./branding/readme-cover.svg) and [project-highlights SVG](./branding/readme-highlights.svg). Both are self-contained vector assets with accessible titles and explicit dimensions.
+
 ![MATRIVA landing page](./screenshots/01-landing.jpg)
 
 ## Diagram atlas
