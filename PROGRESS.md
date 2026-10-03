@@ -19,6 +19,13 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-03 — @neevmodh — Visual atlas and project README
+
+- Added six code-grounded diagrams for architecture, chat processing, user flow, source review, production deployment and privacy. Each has self-contained SVG, 2× PNG and editable Mermaid exports with a shared generator.
+- Captured 13 actual desktop/mobile UI screens against a real isolated API, using only synthetic accounts and care records. Capture tooling blanks provider keys, disables tracing, keeps source fixtures pending, removes its temporary database and stops only its own processes. The manifest records the source snapshot and browser result.
+- Rewrote the README around real UI images, architecture, a working offline quickstart, evidence/consent boundaries and live CI badges. Added the Material gallery/reproduction guide, preserved both original PDFs in the capitalized folder, and corrected production ingress/Redis descriptions and current test counts.
+- Validation: 577 backend tests, Ruff, mypy, frontend lint, secret scan, diagram rendering and the complete real-API capture flow pass; no browser page errors. Required CI runs on the pull request before integration.
+
 ### 2026-10-02 — @neevmodh — Keep generated Next.js types out of Git
 
 - Stop tracking `frontend/next-env.d.ts`, which Next.js rewrites when switching between development and production. Keep the generated local file available for the running app.

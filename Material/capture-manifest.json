@@ -1,0 +1,114 @@
+{
+  "captured_at": "2026-10-03T08:43:36.821Z",
+  "source_commit": "29bd558f74bc569cbbd16a8aa99aa4e0cf6eca73",
+  "mode": "Real local UI + real API; disposable SQLite; offline RAG; provider keys and tracing disabled",
+  "data": "Entirely synthetic; no patient records or real credentials; no real clinical sources approved",
+  "rendering": "Chromium JPEG quality 92; animations disabled; development indicator omitted; application content unchanged",
+  "browser_page_errors": [],
+  "screenshots": [
+    {
+      "file": "screenshots/01-landing.jpg",
+      "description": "Public landing page; actual application, desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "screenshots/02-signup.jpg",
+      "description": "Account creation before any personal information is entered",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "screenshots/03-onboarding.jpg",
+      "description": "Synthetic week-20 profile; explicit storage-consent step",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "screenshots/04-chat-workspace.jpg",
+      "description": "Signed-in chat workspace with synthetic profile",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "screenshots/05-weekly-plan.jpg",
+      "description": "Week-20 visit schedule, reminders and educational tasks",
+      "viewport": {
+        "width": 1440,
+        "height": 1300
+      }
+    },
+    {
+      "file": "screenshots/06-health-readings.jpg",
+      "description": "Real readings UI with three synthetic haemoglobin measurements",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "screenshots/07-meal-journal.jpg",
+      "description": "Real parser output for a synthetic vegetarian meal",
+      "viewport": {
+        "width": 1440,
+        "height": 1150
+      }
+    },
+    {
+      "file": "screenshots/08-food-guide.jpg",
+      "description": "Traditional book material and nutrient guidance shown separately",
+      "viewport": {
+        "width": 1440,
+        "height": 1250
+      }
+    },
+    {
+      "file": "screenshots/09-doctor-summary.jpg",
+      "description": "Printable summary of the synthetic care profile",
+      "viewport": {
+        "width": 1440,
+        "height": 1250
+      }
+    },
+    {
+      "file": "screenshots/10-emergency-response.jpg",
+      "description": "Scripted demonstration of the real emergency short-circuit; no model call",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "screenshots/11-privacy-settings.jpg",
+      "description": "Consent, export, safety profile and account controls",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "file": "screenshots/12-mobile-workspace.jpg",
+      "description": "Actual responsive chat workspace at 390 × 844",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "file": "screenshots/13-source-review.jpg",
+      "description": "Admin review queue containing only pending synthetic demonstration documents",
+      "viewport": {
+        "width": 1440,
+        "height": 1100
+      }
+    }
+  ]
+}

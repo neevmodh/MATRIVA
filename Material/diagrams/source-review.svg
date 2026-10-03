@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1010" role="img" aria-labelledby="title desc">
+<title id="title">Evidence earns its place in the answer</title><desc id="desc">Uploading or indexing a document never counts as clinical approval.. Only active documents with approved documents and sources enter ordinary retrieval. An admin action is not clinical certification.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6C8066"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#263A2A}.serif{font-family:Georgia,serif}.caption{fill:#5D7059}.tag{font-size:11px;font-weight:700;letter-spacing:1.6px}</style>
+<rect width="1480" height="1010" fill="#F5F3EB"/>
+<rect x="0" y="0" width="1480" height="8" fill="#506C48"/>
+<text x="60" y="48" class="tag">MATRIVA / TECHNICAL ATLAS</text>
+<text x="60" y="108" class="serif" font-size="43">Evidence earns its place in the answer</text>
+<text x="60" y="143" font-size="18" class="caption">Uploading or indexing a document never counts as clinical approval.</text>
+<polyline points="370,325.0 410,325.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="720,325.0 760,325.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="1070,325.0 1110,325.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="1265.0,410 1265.0,535" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="1230.1" y="458.5" width="69.80000000000001" height="25" rx="4" fill="#F5F3EB"/>
+<text x="1265.0" y="475.5" text-anchor="middle" font-size="13" font-weight="600">indexed</text>
+<polyline points="1110,620.0 1070,620.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="760,620.0 720,620.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="1265.0,705 1265,790 215,790 215.0,705" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="671.8" y="776" width="136.4" height="25" rx="4" fill="#F5F3EB"/>
+<text x="740" y="793" text-anchor="middle" font-size="13" font-weight="600">reject / archive</text>
+<rect x="60" y="240" width="310" height="170" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="82" y="265" class="tag">01 / ADMIN</text>
+<text x="82" y="295" font-size="23" font-weight="700">Upload + metadata</text>
+<text x="82" y="322" font-size="17">PDF or text-based file</text>
+<text x="82" y="344" font-size="17">Source, domain, evidence label</text>
+<rect x="410" y="240" width="310" height="170" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="432" y="265" class="tag">02 / PROCESS</text>
+<text x="432" y="295" font-size="23" font-weight="700">Extract the content</text>
+<text x="432" y="322" font-size="17">Text extraction / OCR</text>
+<text x="432" y="344" font-size="17">Validate supported formats</text>
+<rect x="760" y="240" width="310" height="170" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="782" y="265" class="tag">03 / PENDING</text>
+<text x="782" y="295" font-size="23" font-weight="700">Store passages</text>
+<text x="782" y="322" font-size="17">Chunks with source provenance</text>
+<text x="782" y="344" font-size="17">Pending document and source</text>
+<rect x="1110" y="240" width="310" height="170" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="1132" y="265" class="tag">04 / INDEX STATUS</text>
+<text x="1132" y="295" font-size="23" font-weight="700">Index successfully</text>
+<text x="1132" y="322" font-size="17">Reindex before approval</text>
+<text x="1132" y="344" font-size="17">Failed indexing blocks approval</text>
+<rect x="1110" y="535" width="310" height="170" rx="10" fill="#F6ECD2" stroke="#B0985E" stroke-width="1.5"/>
+<text x="1132" y="560" class="tag">05 / HUMAN DECISION</text>
+<text x="1132" y="590" font-size="23" font-weight="700">Review the actual</text>
+<text x="1132" y="615" font-size="23" font-weight="700">source</text>
+<text x="1132" y="642" font-size="17">Compare extracted text to source</text>
+<text x="1132" y="664" font-size="17">Check provenance and suitability</text>
+<rect x="760" y="535" width="310" height="170" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="782" y="560" class="tag">06 / ELIGIBILITY</text>
+<text x="782" y="590" font-size="23" font-weight="700">Approve for retrieval</text>
+<text x="782" y="617" font-size="17">Document + source approved</text>
+<text x="782" y="639" font-size="17">Document active; record reviewer</text>
+<rect x="410" y="535" width="310" height="170" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="432" y="560" class="tag">07 / ANSWER PATH</text>
+<text x="432" y="590" font-size="23" font-weight="700">Retrieve + cite</text>
+<text x="432" y="617" font-size="17">Approved passages only</text>
+<text x="432" y="639" font-size="17">Evidence gate still applies</text>
+<rect x="60" y="535" width="310" height="170" rx="10" fill="#F7E3E1" stroke="#BD8583" stroke-width="1.5"/>
+<text x="82" y="560" class="tag">ALTERNATE / EXCLUDE</text>
+<text x="82" y="590" font-size="23" font-weight="700">Reject or archive</text>
+<text x="82" y="617" font-size="17">Kept outside ordinary retrieval</text>
+<text x="82" y="639" font-size="17">Pending remains ineligible</text>
+<line x1="60" x2="1420" y1="916" y2="916" stroke="#CCD4C6"/>
+<text x="60" y="946" font-size="16" class="caption">Only active documents with approved documents and sources enter ordinary retrieval. An admin action is not clinical certification.</text>
+<text x="60" y="976" font-size="13" class="caption">Code reference: api/admin.py · services/knowledge.py · rag/local/corpus.py · repositories/knowledge.py</text>
+<text x="1420" y="976" text-anchor="end" class="tag">SOURCE-REVIEW</text></svg>

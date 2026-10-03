@@ -1,5 +1,9 @@
 # Architecture
 
+The [Material visual atlas](../Material/README.md) provides six diagrams with SVG, PNG and editable Mermaid exports, plus captures of the running application.
+
+![Implemented system architecture](../Material/diagrams/architecture.svg)
+
 MATRIVA is one chat workspace in front of one FastAPI backend. Everything that decides what a patient is told, the safety rules, the retrieval, the guard rails and the care logic, runs in the backend, in code and data that can be read and tested.
 
 ```mermaid
@@ -168,7 +172,7 @@ provider availability as clinical approval.
 | Retrieval finds too little | The fixed "no reviewed source" answer, with `insufficient_information` |
 | The output check rejects an answer | The answer is replaced whole with a safe message |
 | The external LLM or embedding provider fails | The grounded local answer; never a guess |
-| Redis is down | A local in-process rate limiter and a logged warning |
+| Redis is down | Development can use a local in-process limiter; production quota checks fail closed with `503`, and readiness is degraded |
 | The database is down | `/health` reports it; requests fail rather than guess |
 
 ## Cost of the safety layer

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1160" role="img" aria-labelledby="title desc">
+<title id="title">The production stack and its boundaries</title><desc id="desc">Docker Compose currently defines four services. Public ingress remains an operator responsibility.. The production Compose file exposes internal ports only. A reverse proxy / published ports and HTTPS must be configured for public access.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6C8066"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#263A2A}.serif{font-family:Georgia,serif}.caption{fill:#5D7059}.tag{font-size:11px;font-weight:700;letter-spacing:1.6px}</style>
+<rect width="1480" height="1160" fill="#F5F3EB"/>
+<rect x="0" y="0" width="1480" height="8" fill="#506C48"/>
+<text x="60" y="48" class="tag">MATRIVA / TECHNICAL ATLAS</text>
+<text x="60" y="108" class="serif" font-size="43">The production stack and its boundaries</text>
+<text x="60" y="143" font-size="18" class="caption">Docker Compose currently defines four services. Public ingress remains an operator responsibility.</text>
+<rect x="50" y="425" width="1370" height="570" rx="12" fill="none" stroke="#D6DDD0" stroke-width="1.5"/>
+<text x="70" y="454" class="tag caption">DOCKER COMPOSE / PRIVATE SERVICE NETWORK</text>
+<polyline points="470,285.0 540,285.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="740.0,360 740,390 270,390 270.0,490" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="740.0,360 740.0,490" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="930,575.0 1040,575.0" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="740.0,660 740,730 460,730 460.0,790" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="740.0,660 740,730 1020,730 1020.0,790" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="70" y="210" width="400" height="150" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="92" y="235" class="tag">CLIENT</text>
+<text x="92" y="265" font-size="23" font-weight="700">Browser / device</text>
+<text x="92" y="292" font-size="17">UI + API request origins</text>
+<text x="92" y="314" font-size="17">Browser-visible API URL at build time</text>
+<rect x="540" y="210" width="400" height="150" rx="10" fill="#F6ECD2" stroke="#B0985E" stroke-width="1.5"/>
+<text x="562" y="235" class="tag">PUBLIC BOUNDARY</text>
+<text x="562" y="265" font-size="23" font-weight="700">Operator-managed ingress</text>
+<text x="562" y="292" font-size="17">HTTPS / reverse proxy</text>
+<text x="562" y="314" font-size="17">Not supplied by production Compose</text>
+<rect x="80" y="490" width="380" height="170" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="102" y="515" class="tag">FRONTEND / 3000</text>
+<text x="102" y="545" font-size="23" font-weight="700">Next.js standalone</text>
+<text x="102" y="572" font-size="17">Node 24, public assets included</text>
+<text x="102" y="594" font-size="17">No backend credentials in container</text>
+<rect x="550" y="490" width="380" height="170" rx="10" fill="#263A2A" stroke="#263A2A" stroke-width="1.5"/>
+<text x="572" y="515" class="tag" style="fill:#F5F3EB">BACKEND / 8000</text>
+<text x="572" y="545" font-size="23" font-weight="700" style="fill:#F5F3EB">FastAPI service</text>
+<text x="572" y="572" font-size="17" style="fill:#F5F3EB">Python 3.11, non-root runtime</text>
+<text x="572" y="594" font-size="17" style="fill:#F5F3EB">Alembic migrations on startup</text>
+<rect x="1040" y="490" width="350" height="170" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="1062" y="515" class="tag">BACKEND_RUNTIME</text>
+<text x="1062" y="545" font-size="23" font-weight="700">Writable runtime volume</text>
+<text x="1062" y="572" font-size="17">Evaluation reports</text>
+<text x="1062" y="594" font-size="17">Owned by the backend user</text>
+<rect x="250" y="790" width="420" height="155" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="272" y="815" class="tag">DATABASE / PG16</text>
+<text x="272" y="845" font-size="23" font-weight="700">PostgreSQL + pgvector</text>
+<text x="272" y="872" font-size="17">Accounts, care and conversation data</text>
+<text x="272" y="894" font-size="17">Documents / vector index; db_data</text>
+<rect x="810" y="790" width="420" height="155" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="832" y="815" class="tag">REDIS / 7</text>
+<text x="832" y="845" font-size="23" font-weight="700">Authenticated Redis</text>
+<text x="832" y="872" font-size="17">Shared quotas; authenticated health</text>
+<text x="832" y="894" font-size="17">Persistent redis_data volume</text>
+<line x1="60" x2="1420" y1="1066" y2="1066" stroke="#CCD4C6"/>
+<text x="60" y="1096" font-size="16" class="caption">The production Compose file exposes internal ports only. A reverse proxy / published ports and HTTPS must be configured for public access.</text>
+<text x="60" y="1126" font-size="13" class="caption">Code reference: docker-compose.prod.yml · backend/Dockerfile · frontend/Dockerfile · backend/docker-entrypoint.sh</text>
+<text x="1420" y="1126" text-anchor="end" class="tag">DEPLOYMENT</text></svg>

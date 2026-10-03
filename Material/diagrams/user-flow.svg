@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 1190" role="img" aria-labelledby="title desc">
+<title id="title">One workspace, three everyday journeys</title><desc id="desc">The patient journey from first visit to asking, tracking and controlling personal data.. Inline cards live inside /chat. Staff document review, evaluations and feedback use separate role-gated views.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6C8066"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#263A2A}.serif{font-family:Georgia,serif}.caption{fill:#5D7059}.tag{font-size:11px;font-weight:700;letter-spacing:1.6px}</style>
+<rect width="1480" height="1190" fill="#F5F3EB"/>
+<rect x="0" y="0" width="1480" height="8" fill="#506C48"/>
+<text x="60" y="48" class="tag">MATRIVA / TECHNICAL ATLAS</text>
+<text x="60" y="108" class="serif" font-size="43">One workspace, three everyday journeys</text>
+<text x="60" y="143" font-size="18" class="caption">The patient journey from first visit to asking, tracking and controlling personal data.</text>
+<polyline points="360,307.5 410,307.5" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="710,307.5 760,307.5" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="1060,307.5 1110,307.5" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="910.0,385 910.0,485" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+<rect x="860.3" y="442" width="99.4" height="25" rx="4" fill="#F5F3EB"/>
+<text x="910" y="459" text-anchor="middle" font-size="13" font-weight="600">leave setup</text>
+<polyline points="1265.0,385 1265,680 260,680 260.0,745" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="1265.0,385 1265,680 740,680 740.0,745" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<polyline points="1265.0,385 1265,680 1220,680 1220.0,745" fill="none" stroke="#6C8066" stroke-width="2" stroke-linejoin="round"  marker-end="url(#arrow)"/>
+<rect x="60" y="230" width="300" height="155" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="82" y="255" class="tag">01 / LANDING</text>
+<text x="82" y="285" font-size="23" font-weight="700">Discover MATRIVA</text>
+<text x="82" y="312" font-size="17">Read the scope and limits</text>
+<text x="82" y="334" font-size="17">Open signup or login</text>
+<rect x="410" y="230" width="300" height="155" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="432" y="255" class="tag">02 / AUTHENTICATION</text>
+<text x="432" y="285" font-size="23" font-weight="700">Create an account</text>
+<text x="432" y="312" font-size="17">Name, email, password</text>
+<text x="432" y="334" font-size="17">Or sign into an existing</text>
+<text x="432" y="356" font-size="17">account</text>
+<rect x="760" y="230" width="300" height="155" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="782" y="255" class="tag">03 / ONBOARDING</text>
+<text x="782" y="285" font-size="23" font-weight="700">Set up with consent</text>
+<text x="782" y="312" font-size="17">Week / last period / due date</text>
+<text x="782" y="334" font-size="17">Region, diet and storage</text>
+<text x="782" y="356" font-size="17">consent</text>
+<rect x="1110" y="230" width="310" height="155" rx="10" fill="#263A2A" stroke="#263A2A" stroke-width="1.5"/>
+<text x="1132" y="255" class="tag" style="fill:#F5F3EB">04 / CHAT</text>
+<text x="1132" y="285" font-size="23" font-weight="700" style="fill:#F5F3EB">Enter the workspace</text>
+<text x="1132" y="312" font-size="17" style="fill:#F5F3EB">Chat + sidebar shortcuts</text>
+<text x="1132" y="334" font-size="17" style="fill:#F5F3EB">One place for care tools</text>
+<rect x="760" y="485" width="300" height="155" rx="10" fill="#F6ECD2" stroke="#B0985E" stroke-width="1.5"/>
+<text x="782" y="510" class="tag">CONSENT NOT GRANTED</text>
+<text x="782" y="540" font-size="23" font-weight="700">Pause setup</text>
+<text x="782" y="567" font-size="17">No consented health profile</text>
+<text x="782" y="589" font-size="17">saved</text>
+<text x="782" y="611" font-size="17">Return when ready to continue</text>
+<rect x="60" y="745" width="400" height="190" rx="10" fill="#E5EDDF" stroke="#78936B" stroke-width="1.5"/>
+<text x="82" y="770" class="tag">JOURNEY A / GUIDANCE</text>
+<text x="82" y="800" font-size="23" font-weight="700">Ask and learn</text>
+<text x="82" y="827" font-size="17">Question → safety → evidence</text>
+<text x="82" y="849" font-size="17">Sources, refusal or escalation</text>
+<text x="82" y="871" font-size="17">Book, library and knowledge map</text>
+<rect x="540" y="745" width="400" height="190" rx="10" fill="#E5F0EF" stroke="#739895" stroke-width="1.5"/>
+<text x="562" y="770" class="tag">JOURNEY B / CARE</text>
+<text x="562" y="800" font-size="23" font-weight="700">Plan and track</text>
+<text x="562" y="827" font-size="17">Plan, check-in, screening</text>
+<text x="562" y="849" font-size="17">Readings, meals, food guide</text>
+<text x="562" y="871" font-size="17">Printable doctor summary</text>
+<rect x="1020" y="745" width="400" height="190" rx="10" fill="#FFFFFF" stroke="#BFC9BB" stroke-width="1.5"/>
+<text x="1042" y="770" class="tag">JOURNEY C / CONTROL</text>
+<text x="1042" y="800" font-size="23" font-weight="700">Manage your data</text>
+<text x="1042" y="827" font-size="17">Settings and safety profile</text>
+<text x="1042" y="849" font-size="17">Download the JSON export</text>
+<text x="1042" y="871" font-size="17">Withdraw consent / delete account</text>
+<line x1="60" x2="1420" y1="1096" y2="1096" stroke="#CCD4C6"/>
+<text x="60" y="1126" font-size="16" class="caption">Inline cards live inside /chat. Staff document review, evaluations and feedback use separate role-gated views.</text>
+<text x="60" y="1156" font-size="13" class="caption">Code reference: frontend/app/{signup,onboarding,chat,settings} · chat/page.tsx QUICK_ACTIONS · components/care/</text>
+<text x="1420" y="1156" text-anchor="end" class="tag">USER-FLOW</text></svg>
