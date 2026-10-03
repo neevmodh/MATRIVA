@@ -2,6 +2,8 @@
 
 Everything about MATRIVA, in one place. If you are new, read the [project README](../README.md) first, then follow the path for your role.
 
+Read the project introduction in [English](../README.md), [हिन्दी](./translations/README.hi.md), [ગુજરાતી](./translations/README.gu.md) or [Hinglish](./translations/README.hinglish.md). The [reading-guide index](./translations/README.md) explains the scope of these translations.
+
 ## By role
 
 | You are | Read, in this order |

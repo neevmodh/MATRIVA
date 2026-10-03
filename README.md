@@ -1,43 +1,52 @@
 <div align="center">
 
-# MATRIVA
+![MATRIVA — ask, plan and track, with sources, care tools and consent controls](./Material/branding/readme-cover.svg)
 
-### A pregnancy companion with evidence at its core.
+# 🌿 MATRIVA
 
-Ask, plan and track in one workspace. See the source behind an answer, keep modern guidance and traditional material distinct, and know when the app routes a question to human care.
+### Evidence for your questions. A workspace for your week.
 
-[![CI](https://github.com/neevmodh/MATRIVA/actions/workflows/ci.yml/badge.svg)](https://github.com/neevmodh/MATRIVA/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/neevmodh/MATRIVA/actions/workflows/codeql.yml/badge.svg)](https://github.com/neevmodh/MATRIVA/actions/workflows/codeql.yml)
+**Pregnancy education · care planning · everyday records · personal data controls**
 
-[Explore the app](#the-experience) · [Architecture](#architecture) · [Run locally](#run-locally) · [Visual atlas](./Material/README.md) · [Documentation](#documentation)
+मातृ देखभाल, समझ के साथ · માતૃત્વની સંભાળ, સમજ સાથે
 
-![MATRIVA landing page with pregnancy illustration and introduction](./Material/screenshots/01-landing.jpg)
+[![CI](https://github.com/neevmodh/MATRIVA/actions/workflows/ci.yml/badge.svg)](https://github.com/neevmodh/MATRIVA/actions/workflows/ci.yml) [![CodeQL](https://github.com/neevmodh/MATRIVA/actions/workflows/codeql.yml/badge.svg)](https://github.com/neevmodh/MATRIVA/actions/workflows/codeql.yml) [![Offline RAG](https://img.shields.io/badge/RAG-offline_by_default-338A65?style=flat-square)](./docs/local-rag.md) [![Clinical review](https://img.shields.io/badge/clinical_review-pending-D69A32?style=flat-square)](./docs/clinical-review.md)
+
+**Read this project in:** [English](./README.md) · [हिन्दी](./docs/translations/README.hi.md) · [ગુજરાતી](./docs/translations/README.gu.md) · [Hinglish](./docs/translations/README.hinglish.md)
+
+[Experience](#the-experience) · [Language support](#language-support) · [Technology](#languages-and-technology) · [Architecture](#architecture) · [Quickstart](#run-locally) · [Visual atlas](./Material/README.md) · [Docs](#documentation)
 
 </div>
 
 > [!IMPORTANT]
 > This is a development and demonstration project. Clinical review of the care rules and safety content is pending, and Hindi/Gujarati safety wording needs native-speaker review. It does not diagnose, prescribe or replace a clinician. Read the [review requirements](./docs/clinical-review.md) before considering patient use.
 
-## The experience
+![Four ways to explore: multilingual reading guides, diagrams and real screenshots, offline setup and required CI](./Material/branding/readme-highlights.svg)
+
+<a id="the-experience"></a>
+
+## 💚 The experience
 
 MATRIVA brings pregnancy education, a visit plan and everyday records into a chat workspace for mothers and the people supporting them. Questions can be entered in English, Hindi, Hinglish or Gujarati. Retrieved answers currently remain in English; translated safety responses have a separate review requirement.
 
 The default retrieval engine runs locally without an AI API key. For an ordinary guidance question it uses eligible source passages, cites the evidence, or returns an insufficient-evidence response. Emergency and prohibited requests take a fixed safety path before retrieval.
 
+![MATRIVA landing page with pregnancy illustration and introduction](./Material/screenshots/01-landing.jpg)
+
 | Journey | In the workspace | What it provides |
 |---|---|---|
-| Ask and understand | Chat, `/evidence`, `/library`, `/book`, `/map` | Source references, evidence labels, traditional book material and related topics |
-| Plan the week | `/plan`, `/week`, `/visits` | Pregnancy dating, visit schedule and tasks from versioned care rules |
-| Check in | `/checkin`, `/check`, `/log` | Daily records, screening and safety routing |
-| Track readings | `/readings` | Hb, blood pressure, weight and glucose records; trends and report import |
-| Record food | `/meals`, `/foods` | Meal parsing, approximate nutrients and diet/allergy-aware food lists |
-| Prepare for a visit | `/summary` | A printable summary assembled from the care profile and records |
-| Control personal data | Settings | Storage consent, safety profile, JSON export and deletion controls |
-| Review evidence | Admin → Documents | Upload, preview, indexing status and a human review queue |
+| 💬 Ask and understand | Chat, `/evidence`, `/library`, `/book`, `/map` | Source references, evidence labels, traditional book material and related topics |
+| 🗓️ Plan the week | `/plan`, `/week`, `/visits` | Pregnancy dating, visit schedule and tasks from versioned care rules |
+| 🌱 Check in | `/checkin`, `/check`, `/log` | Daily records, screening and safety routing |
+| 📈 Track readings | `/readings` | Hb, blood pressure, weight and glucose records; trends and report import |
+| 🥗 Record food | `/meals`, `/foods` | Meal parsing, approximate nutrients and diet/allergy-aware food lists |
+| 📋 Prepare for a visit | `/summary` | A printable summary assembled from the care profile and records |
+| 🔐 Control personal data | Settings | Storage consent, safety profile, JSON export and deletion controls |
+| 📚 Review evidence | Admin → Documents | Upload, preview, indexing status and a human review queue |
 
 Care thresholds and schedules are source-labelled files with clinical review pending. Nutrient calculations are estimates. Reminders currently appear while the app is open; push and SMS delivery are not implemented.
 
-### Inside the application
+### 📸 Inside the application
 
 These are captures of the running frontend and API using synthetic accounts and records. They include no patient data. The [capture manifest](./Material/capture-manifest.json) records the source revision, capture date and viewports.
 
@@ -64,7 +73,52 @@ The [complete gallery](./Material/README.md#application-captures) includes 13 de
 
 </details>
 
-## Architecture
+<a id="language-support"></a>
+
+## 🌐 Language support
+
+**Documentation language and application language are separate.** The translated guides explain the project and setup. The current UI has English, Hindi and Gujarati language options; Hinglish is supported as an input style.
+
+| Language | Example input | Current application behavior | Read the guide |
+|---|---|---|---|
+| 🌐 **English** | “What foods should I eat this week?” | Questions, source-based answers and safety responses in English | [English](./README.md) |
+| 🇮🇳 **हिन्दी · Hindi** | “इस सप्ताह मुझे क्या खाना चाहिए?” | Hindi questions and translated safety/refusal wording; retrieved answers currently remain in English | [हिन्दी मार्गदर्शिका](./docs/translations/README.hi.md) |
+| 🇮🇳 **ગુજરાતી · Gujarati** | “આ અઠવાડિયે મારે શું ખાવું જોઈએ?” | Gujarati questions and translated safety/refusal wording; retrieved answers currently remain in English | [ગુજરાતી માર્ગદર્શિકા](./docs/translations/README.gu.md) |
+| 💬 **Hinglish** | “Is week mujhe kya khana chahiye?” | Roman Hindi/mixed English input; source-based answers currently remain in English | [Hinglish guide](./docs/translations/README.hinglish.md) |
+
+Hindi and Gujarati clinical safety wording needs native-speaker review. The translated documentation is an introductory guide, not clinical validation. See the [language implementation](./frontend/lib/language.ts), [multilingual safety tests](./backend/tests/test_multilingual_safety.py) and [FAQ](./docs/faq.md).
+
+<a id="languages-and-technology"></a>
+
+## 🎨 Languages and technology
+
+Explore all eight source languages and their roles in the repository.
+
+<div align="center">
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=222222) ![CSS](https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white)
+
+![Shell](https://img.shields.io/badge/Shell-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white) ![Dockerfile](https://img.shields.io/badge/Dockerfile-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Mako](https://img.shields.io/badge/Mako-8B5CF6?style=for-the-badge) ![Mermaid](https://img.shields.io/badge/Mermaid-FF3670?style=for-the-badge&logo=mermaid&logoColor=white)
+
+</div>
+
+| Language or format | Where it belongs |
+|---|---|
+| 🐍 Python | FastAPI, safety, retrieval, care, ingestion, evaluations and tooling |
+| 🔷 TypeScript | React components, Next.js routes, API contracts and browser tests |
+| 🟨 JavaScript | Frontend configuration and Playwright capture tooling |
+| 🟪 CSS | The interface's typography, spacing, colors and responsive layout |
+| 🐚 Shell | Backend container startup and migration orchestration |
+| 🐳 Dockerfile | Reproducible frontend and backend container builds |
+| 🧩 Mako | Alembic migration-file template |
+| 🧭 Mermaid | Editable architecture, workflow and user-journey graphs |
+| 📄 YAML · JSON · Markdown · SVG | Reviewable rules, structured data, documentation and vector graphics |
+
+**Runtime stack:** Next.js 16 · React 19 · FastAPI · SQLAlchemy · LangChain · PostgreSQL/pgvector · Redis · Docker. [Configuration](./docs/configuration.md) explains optional providers and environments.
+
+<a id="architecture"></a>
+
+## 🏗️ Architecture
 
 The application is a **modular monolith**: one Next.js workspace talks to one FastAPI service. Safety, retrieval and deterministic care services have separate modules behind the API. SQLAlchemy supports SQLite for local development and PostgreSQL with pgvector for production. Redis supplies shared production quotas.
 
@@ -81,7 +135,7 @@ The application is a **modular monolith**: one Next.js workspace talks to one Fa
 | Persistence | SQLAlchemy, Alembic, PostgreSQL/pgvector | Accounts, consent, care, conversations and knowledge records |
 | Operations | Docker Compose, Redis, GitHub Actions, CodeQL | Runtime services, shared limits and automated verification |
 
-### How an answer is made
+### 🔄 How an answer is made
 
 1. Authenticate and validate the request; apply shared quotas.
 2. Classify risk and apply personal guard rails when consent permits. Blocking or urgent decisions return fixed messages without retrieval.
@@ -92,13 +146,15 @@ The application is a **modular monolith**: one Next.js workspace talks to one Fa
 
 The streaming client applies the final event even when it replaces earlier deltas. See the [working flowchart](./Material/diagrams/working-flow.svg) and [SSE contract](./docs/api.md#streaming-chat).
 
-### The user journey
+### 🧭 The user journey
 
 ![User flow from landing and account creation through consent to guidance, care tracking and privacy](./Material/diagrams/user-flow.svg)
 
 The [visual atlas](./Material/README.md#diagram-atlas) also contains the [source-review workflow](./Material/diagrams/source-review.svg), [production deployment](./Material/diagrams/deployment.svg) and [privacy/deletion flow](./Material/diagrams/privacy-flow.svg). Each diagram has SVG, high-resolution PNG and editable Mermaid versions.
 
-## Run locally
+<a id="run-locally"></a>
+
+## 🚀 Run locally
 
 Use **Python 3.11 or 3.14**, **Node.js 24** and npm. The first setup below uses SQLite and offline retrieval; Docker and provider keys are optional.
 
@@ -145,7 +201,9 @@ For the development stack, copy the root `.env.example` to `.env`, configure its
 
 Production uses `docker-compose.prod.yml` with PostgreSQL, authenticated Redis, the non-root API and the Next.js standalone image. Its service ports are internal: configure public HTTPS ingress and the browser-visible API URL yourself. Production quotas fail closed if Redis is unavailable. Read the [deployment guide](./docs/deployment.md) and [deployment diagram](./Material/diagrams/deployment.svg).
 
-## Evidence, safety and privacy
+<a id="evidence-safety-and-privacy"></a>
+
+## 🛡️ Evidence, safety and privacy
 
 **Source eligibility is explicit.** Ordinary corpus retrieval requires active, approved documents and approved sources. Uploading, OCR, indexing and administrative approval are separate steps. Administrative approval alone is not clinical certification. Traditional material remains labelled separately from modern evidence.
 
@@ -157,7 +215,9 @@ Production uses `docker-compose.prod.yml` with PostgreSQL, authenticated Redis, 
 
 Known limits include imperfect book OCR, estimated nutrition values, unreviewed multilingual warning wording and retrieval gaps. [Data sources](./docs/data-sources.md), [measured retrieval results](./docs/local-rag.md) and the [roadmap](./docs/roadmap.md) describe these in detail. No software test result constitutes clinical validation.
 
-## Verification
+<a id="verification"></a>
+
+## ✅ Verification
 
 | Suite | Tests | Coverage |
 |---|---:|---|
@@ -188,7 +248,9 @@ python3 scripts/docker_smoke.py --browser
 
 See [testing](./docs/testing.md) for suite isolation, dependencies and the limits of each check. Live status is available in [Actions](https://github.com/neevmodh/MATRIVA/actions).
 
-## Repository map
+<a id="repository-map"></a>
+
+## 🗂️ Repository map
 
 ```text
 MATRIVA/
@@ -204,7 +266,9 @@ MATRIVA/
 └── .github/        CI, CodeQL, ownership and contribution templates
 ```
 
-## Documentation
+<a id="documentation"></a>
+
+## 📚 Documentation
 
 | Start here | Read |
 |---|---|
@@ -218,7 +282,9 @@ MATRIVA/
 
 The [documentation index](./docs/README.md) lists all guides, including historical submission and sprint documents.
 
-## Team
+<a id="team"></a>
+
+## 🤝 Team
 
 | Contributor | Workstream |
 |---|---|
@@ -229,3 +295,11 @@ The [documentation index](./docs/README.md) lists all guides, including historic
 Ownership is recorded in [CODEOWNERS](./.github/CODEOWNERS). Read [CONTRIBUTING](./CONTRIBUTING.md) before changing behavior or source content, and report vulnerabilities through [SECURITY](./SECURITY.md).
 
 **License:** no license has been selected; the repository currently reserves all rights.
+
+<div align="center">
+
+🌿 **MATRIVA · मातृ · માતૃ**
+
+[Explore all project material](./Material/README.md) · [Contribute](./CONTRIBUTING.md) · [Report a security issue](./SECURITY.md)
+
+</div>
