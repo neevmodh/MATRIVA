@@ -19,6 +19,11 @@ Paste your entry right below this line, above the older ones.
 
 <!-- NEW ENTRIES GO HERE -->
 
+### 2026-10-03 — @neevmodh — Verify GitHub diagram presentation
+
+- Added intrinsic SVG dimensions so the diagrams fill the README's content width while remaining responsive. GitHub's rendered README has valid navigation anchors and all local images decode; the Mermaid parser accepts all six editable graphs.
+- PR #9's initial seven CI jobs, production browser smoke and CodeQL passed. The final display correction is checked again before merge.
+
 ### 2026-10-03 — @neevmodh — Visual atlas and project README
 
 - Added six code-grounded diagrams for architecture, chat processing, user flow, source review, production deployment and privacy. Each has self-contained SVG, 2× PNG and editable Mermaid exports with a shared generator.

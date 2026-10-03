@@ -72,7 +72,7 @@ class Diagram:
 
     def render(self):
         svg = [
-            f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 {self.height}" role="img" aria-labelledby="title desc">',
+            f'<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="{self.height}" viewBox="0 0 1480 {self.height}" role="img" aria-labelledby="title desc">',
             f'<title id="title">{escape(self.title)}</title><desc id="desc">{escape(self.subtitle + ". " + self.note)}</desc>',
             '<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#6C8066"/></marker></defs>',
             "<style>text{font-family:Arial,Helvetica,sans-serif;fill:#263A2A}.serif{font-family:Georgia,serif}.caption{fill:#5D7059}.tag{font-size:11px;font-weight:700;letter-spacing:1.6px}</style>",
